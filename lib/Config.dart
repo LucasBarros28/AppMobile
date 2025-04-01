@@ -16,7 +16,14 @@ class _ConfigState extends State<Config> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Configurações"),
+        title: Text(
+          "Configurações",
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: const Color(0xFF6D3701),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {

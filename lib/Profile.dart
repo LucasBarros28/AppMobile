@@ -41,7 +41,7 @@ class _ProfileState extends State<Profile> {
           ),
         ],
       ),
-      backgroundColor: Color(0xFF6D3701),
+      backgroundColor: const Color(0xFF6D3701),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
