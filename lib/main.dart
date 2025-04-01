@@ -1,7 +1,7 @@
-import 'package:app_livros2/Home.dart';
-import 'package:app_livros2/Profile.dart';
-import 'package:app_livros2/criarReview.dart';
 import 'package:flutter/material.dart';
+import 'Home.dart';
+import 'Profile.dart';
+import 'criarReview.dart';
 import 'SignIn.dart';
 import 'bottom_nav_bar.dart';
 import 'criarReview.dart';
