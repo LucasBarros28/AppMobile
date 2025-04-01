@@ -49,6 +49,9 @@ class _HomeState extends State<Home> {
         case 3:
           Navigator.pushReplacementNamed(context, "/perfil");
           break;
+        default:
+          Navigator.pushReplacementNamed(context, "/home");
+          break;
       }
     }
   }
@@ -60,6 +63,7 @@ class _HomeState extends State<Home> {
       body: ListView(
         children: [
           AppBar(
+            automaticallyImplyLeading: false,
             title: Text(
               "Nome do App",
               style: TextStyle(
