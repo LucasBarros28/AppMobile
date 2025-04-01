@@ -27,8 +27,15 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFF6D3701),
         automaticallyImplyLeading: false,
-        title: Text("Nome do App"),
+        title: Text(
+          "Nome do App",
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.settings),

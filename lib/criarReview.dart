@@ -27,8 +27,12 @@ class _criarReviewState extends State<Criarreview> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color(0xFF6D3701),
         automaticallyImplyLeading: false,
-        title: Text("Nome do App"),
+        title: Text(
+          "Nome do App",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.settings),
@@ -86,14 +90,16 @@ class _criarReviewState extends State<Criarreview> {
                           Text(
                             'Nome do Livro:',
                             style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
                               color: Colors.black54,
                             ),
                           ),
                           TextField(
                             decoration: InputDecoration(
-                              hintText: 'Digite o nome do livro',
+                              filled: true,
+                              fillColor: Color(0xFFAC842D), // Cor do fundo
+                              hintText: "Digite algo",
                               border: OutlineInputBorder(),
                             ),
                           ),
@@ -101,13 +107,15 @@ class _criarReviewState extends State<Criarreview> {
                           Text(
                             'Nome do Autor:',
                             style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
                               color: Colors.black54,
                             ),
                           ),
                           TextField(
                             decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Color(0xFFAC842D),
                               hintText: 'Digite o nome do autor',
                               border: OutlineInputBorder(),
                             ),
@@ -135,14 +143,16 @@ class _criarReviewState extends State<Criarreview> {
             Text(
               'Texto Grande:',
               style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
                 color: Colors.black54,
               ),
             ),
             TextField(
               maxLines: 5,
               decoration: InputDecoration(
+                filled: true,
+                fillColor: Color(0xFFAC842D),
                 hintText: 'Digite um texto grande aqui...',
                 border: OutlineInputBorder(),
               ),
