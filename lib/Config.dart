@@ -24,6 +24,7 @@ class _ConfigState extends State<Config> {
           },
         ),
       ),
+      backgroundColor: const Color(0xFF6D3701),
       body: Container(
         child: ListView(
           children: [
@@ -100,11 +101,11 @@ class _ConfigState extends State<Config> {
             ),
             // Botão de logout
             InkWell(
-              onTap:  () {
+              onTap: () {
                 Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SignIn()),
-              );
+                  context,
+                  MaterialPageRoute(builder: (context) => SignIn()),
+                );
               },
               child: ListTile(
                 leading: const Icon(

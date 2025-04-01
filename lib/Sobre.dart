@@ -21,6 +21,7 @@ class _SobreState extends State<Sobre> {
           },
         ),
       ),
+      backgroundColor: const Color(0xFF6D3701),
       body: Stack(
         children: [
           ListView(
@@ -28,14 +29,13 @@ class _SobreState extends State<Sobre> {
               InkWell(
                 onTap: () {
                   showDialog(
-                    context: context,
-                    builder: (context){
-                      return AlertDialog(
-                        title: Text("Versão"),
-                      content: Text("1.0.0"),
-                      );
-                    }
-                  );
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text("Versão"),
+                          content: Text("1.0.0"),
+                        );
+                      });
                 },
                 child: ListTile(
                   title: const Text('Versão'),

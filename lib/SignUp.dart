@@ -46,6 +46,7 @@ class _SignUpState extends State<SignUp> {
           ],
         ),
       ),
+      backgroundColor: const Color(0xFF6D3701),
       body: Padding(
         padding: EdgeInsets.all(16),
         child: Column(
@@ -153,12 +154,14 @@ class _SignUpState extends State<SignUp> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: _isChecked ? () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Profile()),
-                    );
-                  } : null, // Habilita o botão somente se o checkbox estiver marcado
+                  onPressed: _isChecked
+                      ? () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Profile()),
+                          );
+                        }
+                      : null, // Habilita o botão somente se o checkbox estiver marcado
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFAC842D), // Cor do botão
                     foregroundColor: Colors.black, // Cor do texto

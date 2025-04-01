@@ -27,6 +27,7 @@ class _SignInState extends State<SignIn> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
       ),
+      backgroundColor: const Color(0xFF6D3701),
       body: Padding(
         padding: EdgeInsets.all(16),
         child: Column(
