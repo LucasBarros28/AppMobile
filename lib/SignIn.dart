@@ -47,7 +47,11 @@ class _SignInState extends State<SignIn> {
             ),
             Text(
               "E-mail/Nome de usuario",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
             ),
             SizedBox(height: 8),
             TextField(
@@ -61,7 +65,11 @@ class _SignInState extends State<SignIn> {
             SizedBox(height: 16),
             Text(
               "Senha",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
             ),
             SizedBox(height: 8),
             TextField(

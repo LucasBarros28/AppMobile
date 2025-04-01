@@ -38,7 +38,10 @@ class _ProfileState extends State<Profile> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.settings),
+            icon: Icon(
+              Icons.settings,
+              color: Colors.black,
+            ),
             onPressed: () {
               Navigator.push(
                 context,

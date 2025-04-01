@@ -35,7 +35,10 @@ class _criarReviewState extends State<Criarreview> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.settings),
+            icon: Icon(
+              Icons.settings,
+              color: Colors.black,
+            ),
             onPressed: () {
               Navigator.push(
                 context,

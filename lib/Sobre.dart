@@ -22,7 +22,10 @@ class _SobreState extends State<Sobre> {
         ),
         backgroundColor: const Color(0xFF6D3701),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
           onPressed: () {
             Navigator.pop(context); // Volta para a tela anterior
           },
@@ -45,31 +48,46 @@ class _SobreState extends State<Sobre> {
                       });
                 },
                 child: ListTile(
-                  title: const Text('Versão'),
+                  title: const Text(
+                    'Versão',
+                    style: TextStyle(color: Colors.black),
+                  ),
                 ),
               ),
               InkWell(
                 onTap: () => print('Sobre sua conta'),
                 child: ListTile(
-                  title: const Text('Sobre sua conta'),
+                  title: const Text(
+                    'Sobre sua conta',
+                    style: TextStyle(color: Colors.black),
+                  ),
                 ),
               ),
               InkWell(
                 onTap: () => print('Politica de privacidade'),
                 child: ListTile(
-                  title: const Text('Politica de privacidade'),
+                  title: const Text(
+                    'Politica de privacidade',
+                    style: TextStyle(color: Colors.black),
+                  ),
                 ),
               ),
               InkWell(
                 onTap: () => print('Termos de Uso'),
                 child: ListTile(
-                  title: const Text('Termos de Uso'),
+                  title: const Text(
+                    'Termos de Uso',
+                    style: TextStyle(color: Colors.black),
+                  ),
                 ),
               ),
               InkWell(
                 onTap: () => print('Politicas de Terceiros'),
                 child: ListTile(
-                  title: const Text('Politicas de Terceiros'),
+                  title: const Text(
+                    'Politicas de Terceiros',
+                    style: TextStyle(color: Colors.black),
+                  ),
                 ),
               ),
             ],
@@ -88,7 +106,7 @@ class _SobreState extends State<Sobre> {
                 'https://github.com/LucasBarros28\n'
                 'https://github.com/rafahcbarbosa\n',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: 16, color: Colors.black),
               ),
             ),
           ),

@@ -25,7 +25,8 @@ class _ConfigState extends State<Config> {
         ),
         backgroundColor: const Color(0xFF6D3701),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back,
+            color: Colors.black,),
           onPressed: () {
             Navigator.pop(context); // Volta para a tela anterior
           },
@@ -39,20 +40,39 @@ class _ConfigState extends State<Config> {
             InkWell(
               onTap: () => print('Wi-Fi Configurado'),
               child: ListTile(
-                leading: const Icon(Icons.smartphone),
-                title: const Text('Configurações de tela'),
-                trailing: const Icon(Icons.arrow_forward_ios),
+                leading: const Icon(
+                  Icons.smartphone,
+                  color: Colors.black,
+                ),
+                title: const Text(
+                  'Configurações de tela',
+                  style: TextStyle(color: Colors.black),
+                ),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.black,
+                ),
               ),
             ),
 
             // Switch de notificações
             SwitchListTile(
-              activeColor: const Color(0xFF6D3701),
+              inactiveTrackColor: const Color(0xFFAC842D),
+              inactiveThumbColor: Colors.black,
+              activeColor: const Color(0xFFAC842D),
               title: Row(
                 children: const [
-                  Icon(Icons.notifications), // Ícone de notificação
-                  SizedBox(width: 10), // Espaço entre o ícone e o texto
-                  Text("Notificações"), // Texto ao lado do ícone
+                  Icon(
+                    Icons.notifications,
+                    color: Colors.black,
+                  ),
+                  SizedBox(width: 10),
+                  Text(
+                    "Notificações",
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
                 ],
               ),
               value: _notificacao,
@@ -63,14 +83,23 @@ class _ConfigState extends State<Config> {
                 print("Notificações: $valor");
               },
             ),
-
-            // Configurações de segurança
             InkWell(
               onTap: () => print('Configurações de segurança'),
               child: ListTile(
-                leading: const Icon(Icons.password),
-                title: const Text('Segurança'),
-                trailing: const Icon(Icons.arrow_forward_ios),
+                leading: const Icon(
+                  Icons.password,
+                  color: Colors.black,
+                ),
+                title: const Text(
+                  'Segurança',
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.black,
+                ),
               ),
             ),
 
@@ -83,9 +112,20 @@ class _ConfigState extends State<Config> {
                 );
               },
               child: ListTile(
-                leading: const Icon(Icons.info),
-                title: const Text('Sobre o App'),
-                trailing: const Icon(Icons.arrow_forward_ios),
+                leading: const Icon(
+                  Icons.info,
+                  color: Colors.black,
+                ),
+                title: const Text(
+                  'Sobre o App',
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.black,
+                ),
               ),
             ),
             // Botão de deletar conta
