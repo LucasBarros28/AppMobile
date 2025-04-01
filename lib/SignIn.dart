@@ -1,3 +1,4 @@
+import 'package:app_livros2/Home.dart';
 import 'package:flutter/material.dart';
 import 'SignUp.dart';
 import 'Profile.dart';
@@ -88,7 +89,7 @@ class _SignInState extends State<SignIn> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Profile()),
+                      MaterialPageRoute(builder: (context) => Home()),
                     );
                   },
                   style: ElevatedButton.styleFrom(

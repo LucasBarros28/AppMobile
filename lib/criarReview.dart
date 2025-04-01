@@ -11,7 +11,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  int _selectedIndex = 3; // Define o índice da aba "Perfil"
+  int _selectedIndex = 2; // Define o índice da aba "Perfil"
 
   void _onItemTapped(int index) {
     if (index != _selectedIndex) {
