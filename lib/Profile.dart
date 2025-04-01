@@ -24,7 +24,7 @@ class _ProfileState extends State<Profile> {
           Navigator.pushReplacementNamed(context, "/chat");
           break;
         case 3:
-          Navigator.pushReplacementNamed(context, "/perfil//");
+          Navigator.pushReplacementNamed(context, "/perfil");
           break;
       }
     }
