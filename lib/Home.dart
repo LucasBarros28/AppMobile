@@ -56,11 +56,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-<<<<<<< HEAD
       backgroundColor: const Color(0xFF6D3701),
-=======
-      backgroundColor: Color(0xFF6D3701),
->>>>>>> 09129e6b2a83b794f76782127f1250780003814d
       body: ListView(
         children: [
           AppBar(
