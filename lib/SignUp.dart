@@ -27,6 +27,7 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFF6D3701),
         automaticallyImplyLeading: false,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -157,17 +158,14 @@ class _SignUpState extends State<SignUp> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: _isChecked
-                      ? () {
+                  onPressed: _isChecked? () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
                                     MainScreen(initialIndex: 0)),
                           );
-                          ;
-                        }
-                      : null, // Habilita o botão somente se o checkbox estiver marcado
+                        } : null, // Habilita o botão somente se o checkbox estiver marcado
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFAC842D), // Cor do botão
                     foregroundColor: Colors.black, // Cor do texto

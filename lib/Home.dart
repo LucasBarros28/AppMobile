@@ -1,7 +1,7 @@
 import 'dart:ui';
-
-import 'package:app_livros2/Profile.dart';
-import 'package:app_livros2/criarReview.dart';
+import 'Review.dart';
+import 'Profile.dart';
+import 'criarReview.dart';
 import 'package:flutter/material.dart';
 import 'Config.dart';
 import 'Sobre.dart';
@@ -82,14 +82,11 @@ class _HomeState extends State<Home> {
           ),
           GestureDetector(
             onTap: () {
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text("Clicou"),
-                      content: Text("aqui"),
-                    );
-                  });
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Review()),
+              );
             },
             child: Container(
               width: 350, // Define apenas a largura fixa
