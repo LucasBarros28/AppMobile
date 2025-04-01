@@ -1,6 +1,9 @@
+import 'package:app_livros2/Home.dart';
+import 'package:app_livros2/main.dart';
 import 'package:flutter/material.dart';
 import 'SignIn.dart';
 import 'Profile.dart';
+import 'bottom_nav_bar.dart';
 import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
@@ -158,8 +161,11 @@ class _SignUpState extends State<SignUp> {
                       ? () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => Profile()),
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    MainScreen(initialIndex: 0)),
                           );
+                          ;
                         }
                       : null, // Habilita o botão somente se o checkbox estiver marcado
                   style: ElevatedButton.styleFrom(

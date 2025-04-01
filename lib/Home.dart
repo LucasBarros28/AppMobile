@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:app_livros2/Profile.dart';
+import 'package:app_livros2/criarReview.dart';
 import 'package:flutter/material.dart';
 import 'Config.dart';
 import 'Sobre.dart';
@@ -28,6 +30,13 @@ class _HomeState extends State<Home> {
     }
   }
 
+  List<Widget> _screens = [
+    Home(), // Tela principal
+    //PesquisaScreen(), // Tela de Pesquisa
+    Criarreview(), // Tela de Criar Review
+    //ChatScreen(), // Tela de Chat
+    Profile(), // Tela de Perfil
+  ];
   void _loadMoreItems() {
     setState(() {
       items.addAll(List.generate(10, (index) => items.length + index));
@@ -35,25 +44,9 @@ class _HomeState extends State<Home> {
   }
 
   void _onItemTapped(int index) {
-    if (index != _selectedIndex) {
-      switch (index) {
-        case 0:
-          Navigator.pushReplacementNamed(context, "/home");
-          break;
-        case 1:
-          Navigator.pushReplacementNamed(context, "/pesquisa");
-          break;
-        case 2:
-          Navigator.pushReplacementNamed(context, "/chat");
-          break;
-        case 3:
-          Navigator.pushReplacementNamed(context, "/perfil");
-          break;
-        default:
-          Navigator.pushReplacementNamed(context, "/home");
-          break;
-      }
-    }
+    setState(() {
+      _selectedIndex = index; // Atualiza o índice selecionado
+    });
   }
 
   @override
@@ -115,7 +108,8 @@ class _HomeState extends State<Home> {
               padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min, // Faz o container ter altura mínima necessária
+                mainAxisSize: MainAxisSize
+                    .min, // Faz o container ter altura mínima necessária
                 children: [
                   Row(
                     children: [
