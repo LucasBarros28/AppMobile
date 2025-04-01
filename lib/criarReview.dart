@@ -30,7 +30,7 @@ class _criarReviewState extends State<Criarreview> {
         backgroundColor: const Color(0xFF6D3701),
         automaticallyImplyLeading: false,
         title: Text(
-          "Nome do App",
+          "Lecternus",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [

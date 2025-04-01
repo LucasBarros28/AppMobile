@@ -35,17 +35,29 @@ class _SignInState extends State<SignIn> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
-              child: ClipRRect(
-                borderRadius:
-                    BorderRadius.circular(20.0), // Define o raio das bordas
-                child: Image.asset(
-                  'assets/images/logoTeste.png',
-                  width: 200.0,
-                  height: 200.0,
-                  fit: BoxFit.cover,
+                child: Column(
+              children: [
+                ClipRRect(
+                  borderRadius:
+                      BorderRadius.circular(20.0), // Define o raio das bordas
+                  child: Image.asset(
+                    'assets/images/logoTeste.png',
+                    width: 200.0,
+                    height: 200.0,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-            ),
+                SizedBox(height: 5,),
+                Text(
+                  "Lecternus",
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+              ],
+            )),
             Text(
               "E-mail/Nome de usuario",
               style: TextStyle(

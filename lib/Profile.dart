@@ -30,7 +30,7 @@ class _ProfileState extends State<Profile> {
         backgroundColor: Color(0xFF6D3701),
         automaticallyImplyLeading: false,
         title: Text(
-          "Nome do App",
+          "Lecternus",
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,

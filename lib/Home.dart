@@ -65,7 +65,7 @@ class _HomeState extends State<Home> {
           AppBar(
             automaticallyImplyLeading: false,
             title: Text(
-              "Nome do App",
+              "Lecternus",
               style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
