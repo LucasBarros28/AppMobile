@@ -29,8 +29,7 @@ class MyApp extends StatelessWidget {
 
 class MainScreen extends StatefulWidget {
   final int initialIndex;
-  const MainScreen({Key? key, this.initialIndex = 0})
-      : super(key: key); // ⬅ Permite iniciar com qualquer aba
+  const MainScreen({Key? key, this.initialIndex = 0}) : super(key: key);
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -42,15 +41,15 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    _selectedIndex = widget.initialIndex; // ⬅ Define o índice inicial
+    _selectedIndex = widget.initialIndex;
   }
 
   final List<Widget> _pages = [
-    Home(), // ⬅ Use a tela Home real
+    Home(),
     Center(child: Text('Pesquisa', style: TextStyle(fontSize: 24))),
     Criarreview(),
     Center(child: Text('Chat', style: TextStyle(fontSize: 24))),
-    Profile(), // ⬅ Use a tela Profile real
+    Profile(),
   ];
 
   void _onItemTapped(int index) {
