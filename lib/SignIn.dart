@@ -45,7 +45,9 @@ class _SignInState extends State<SignIn> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                SizedBox(height: 5,),
+                SizedBox(
+                  height: 5,
+                ),
                 Text(
                   "Lecternus",
                   style: TextStyle(
@@ -68,6 +70,8 @@ class _SignInState extends State<SignIn> {
             TextField(
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
+                filled: true,
+                fillColor: Color(0xFFAC842D),
                 border: OutlineInputBorder(),
                 hintText: "Digite seu e-mail ou nome de usuario",
                 prefixIcon: Icon(Icons.email),
@@ -86,6 +90,8 @@ class _SignInState extends State<SignIn> {
             TextField(
               obscureText: _obscureText,
               decoration: InputDecoration(
+                filled: true,
+                fillColor: Color(0xFFAC842D),
                 border: OutlineInputBorder(),
                 hintText: "Digite sua senha",
                 prefixIcon: Icon(Icons.lock),
@@ -115,13 +121,16 @@ class _SignInState extends State<SignIn> {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFAC842D),
-                    foregroundColor: Colors.black,
+                    foregroundColor: Colors.white,
                     padding: EdgeInsets.symmetric(horizontal: 40, vertical: 12),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  child: Text("Entrar"),
+                  child: Text(
+                    "Entrar",
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
                 ),
               ],
             ),
@@ -139,9 +148,9 @@ class _SignInState extends State<SignIn> {
                   child: Text(
                     "Ainda não tem uma conta? Cadastre-se",
                     style: TextStyle(
-                      color: Colors.black,
-                      decoration: TextDecoration.underline,
-                    ),
+                        color: Colors.black,
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.w600),
                   ),
                 ),
               ],

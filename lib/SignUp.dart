@@ -36,9 +36,9 @@ class _SignUpState extends State<SignUp> {
               child: Text(
                 "Já sou usuário",
                 style: TextStyle(
-                  color: Colors.black,
-                  decoration: TextDecoration.underline,
-                ),
+                    color: Colors.white,
+                    decoration: TextDecoration.underline,
+                    fontWeight: FontWeight.w600),
               ),
               onPressed: () {
                 Navigator.push(
@@ -64,6 +64,8 @@ class _SignUpState extends State<SignUp> {
             TextField(
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
+                filled: true,
+                fillColor: Color(0xFFAC842D),
                 border: OutlineInputBorder(),
                 hintText: "Nome completo",
                 prefixIcon: Icon(Icons.account_circle),
@@ -78,6 +80,8 @@ class _SignUpState extends State<SignUp> {
             TextField(
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
+                filled: true,
+                fillColor: Color(0xFFAC842D),
                 border: OutlineInputBorder(),
                 hintText: "Digite seu e-mail",
                 prefixIcon: Icon(Icons.email),
@@ -93,6 +97,8 @@ class _SignUpState extends State<SignUp> {
               keyboardType: TextInputType.number,
               inputFormatters: [maskFormatter], // Aplica a máscara
               decoration: InputDecoration(
+                filled: true,
+                fillColor: Color(0xFFAC842D),
                 border: OutlineInputBorder(),
                 hintText: "(00) 00000-0000",
                 prefixIcon: Icon(Icons.phone),
@@ -107,6 +113,8 @@ class _SignUpState extends State<SignUp> {
             TextField(
               obscureText: _obscureText,
               decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white70,
                 border: OutlineInputBorder(),
                 hintText: "Digite sua senha",
                 prefixIcon: Icon(Icons.lock),
@@ -149,7 +157,10 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ),
                 SizedBox(width: 8),
-                Text("Concordo com os termos de uso"),
+                Text(
+                  "Concordo com os termos de uso",
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
               ],
             ),
             SizedBox(height: 16),
@@ -158,14 +169,16 @@ class _SignUpState extends State<SignUp> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: _isChecked? () {
+                  onPressed: _isChecked
+                      ? () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
                                     MainScreen(initialIndex: 0)),
                           );
-                        } : null, // Habilita o botão somente se o checkbox estiver marcado
+                        }
+                      : null, // Habilita o botão somente se o checkbox estiver marcado
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFAC842D), // Cor do botão
                     foregroundColor: Colors.black, // Cor do texto
@@ -174,7 +187,13 @@ class _SignUpState extends State<SignUp> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  child: Text("Registrar"),
+                  child: Text(
+                    "Registrar",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white70,
+                    ),
+                  ),
                 ),
               ],
             ),
