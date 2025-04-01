@@ -5,13 +5,13 @@ import 'bottom_nav_bar.dart';
 import 'Home.dart';
 import 'main.dart';
 
-class Profile extends StatefulWidget {
+class Criarreview extends StatefulWidget {
   @override
-  _ProfileState createState() => _ProfileState();
+  _criarReviewState createState() => _criarReviewState();
 }
 
-class _ProfileState extends State<Profile> {
-  int _selectedIndex = 2; // Define o índice da aba "Perfil"
+class _criarReviewState extends State<Criarreview> {
+  int _selectedIndex = 2;
 
   void _onItemTapped(int index) {
     if (index != _selectedIndex) {
@@ -42,79 +42,53 @@ class _ProfileState extends State<Profile> {
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        padding: EdgeInsets.all(16), // Espaçamento ao redor do retângulo
+        child: Align(
+          alignment: Alignment.topLeft,
+          child: Container(
+            width: 150,
+            height: 200,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 5,
+                  spreadRadius: 2,
+                ),
+              ],
+            ),
+            child: Stack(
               children: [
-                Container(
-                  padding: EdgeInsets.all(4),
-                  child: CircleAvatar(
-                    radius: 40,
-                    backgroundImage: AssetImage('assets/images/profile.webp'),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.asset(
+                    'assets/images/imagem.jpg',
+                    fit: BoxFit.cover,
+                    width: 150,
+                    height: 200,
                   ),
                 ),
-                SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Alex Marques",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Column(
-                            children: [
-                              Text("0",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              Text("Reviews"),
-                            ],
-                          ),
-                          SizedBox(width: 16),
-                          Column(
-                            children: [
-                              Text("0",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              Text("Leitores"),
-                            ],
-                          ),
-                          SizedBox(width: 16),
-                          Column(
-                            children: [
-                              Text("0",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              Text("Seguindo"),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
+                Positioned(
+                  bottom: -8, // Distância da borda inferior
+                  right: 0, // Distância da borda direita
+                  child: FloatingActionButton(
+                    mini: true, // Deixa o botão menor
+                    backgroundColor:
+                        const Color.fromARGB(255, 222, 133, 8), // Cor do botão
+                    onPressed: () {
+                      print("Botão pressionado!");
+                    },
+                    child:
+                        Icon(Icons.add, color: Colors.white), // Ícone do botão
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 16),
-            Text(
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum justo purus, nec pellentesque arcu posuere suscipit.",
-              style: TextStyle(fontSize: 14),
-            ),
-          ],
+          ),
         ),
       ),
-      /* bottomNavigationBar: BottomNavBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-      ),*/
     );
   }
 }

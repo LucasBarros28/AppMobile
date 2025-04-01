@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import "Profile.dart";
+import 'criarReview.dart';
 
 class BottomNavBar extends StatelessWidget {
   final int currentIndex;

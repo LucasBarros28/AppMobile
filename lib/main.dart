@@ -1,8 +1,10 @@
 import 'package:app_livros2/Home.dart';
 import 'package:app_livros2/Profile.dart';
+import 'package:app_livros2/criarReview.dart';
 import 'package:flutter/material.dart';
 import 'SignIn.dart';
 import 'bottom_nav_bar.dart';
+import 'criarReview.dart';
 
 void main() {
   runApp(MyApp());
@@ -46,7 +48,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _pages = [
     Home(), // ⬅ Use a tela Home real
     Center(child: Text('Pesquisa', style: TextStyle(fontSize: 24))),
-    Center(child: Text('Review', style: TextStyle(fontSize: 24))),
+    Criarreview(),
     Center(child: Text('Chat', style: TextStyle(fontSize: 24))),
     Profile(), // ⬅ Use a tela Profile real
   ];
