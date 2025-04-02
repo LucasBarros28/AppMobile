@@ -46,9 +46,11 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _pages = [
     Home(),
-    Center(child: Text('Pesquisa', style: TextStyle(fontSize: 24))),
+    Center(
+        child:
+            Text('Pesquisa//Feature futura', style: TextStyle(fontSize: 24))),
     Criarreview(),
-    Center(child: Text('Chat', style: TextStyle(fontSize: 24))),
+    Center(child: Text('Chat//Feature futura', style: TextStyle(fontSize: 24))),
     Profile(),
   ];
 
