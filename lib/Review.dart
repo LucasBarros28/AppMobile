@@ -32,10 +32,18 @@ class _ReviewState extends State<Review> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: const Color(0xFF57362B),
-        automaticallyImplyLeading: true,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.pop(context); // Volta para a tela anterior
+          },
+        ),
         title: Text(
           "Lecternus",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white,),
         ),
         actions: [
           IconButton(
