@@ -58,7 +58,7 @@ class _SignUpState extends State<SignUp> {
           children: [
             Text(
               "Nome",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
             ),
             SizedBox(height: 8),
             TextField(
@@ -74,7 +74,7 @@ class _SignUpState extends State<SignUp> {
             SizedBox(height: 16),
             Text(
               "E-mail",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
             ),
             SizedBox(height: 8),
             TextField(
@@ -90,7 +90,7 @@ class _SignUpState extends State<SignUp> {
             SizedBox(height: 16),
             Text(
               "Telefone",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
             ),
             SizedBox(height: 8),
             TextField(
@@ -107,14 +107,14 @@ class _SignUpState extends State<SignUp> {
             SizedBox(height: 16),
             Text(
               "Senha",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
             ),
             SizedBox(height: 8),
             TextField(
               obscureText: _obscureText,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.white70,
+                fillColor: Color(0xFFCDA68C),
                 border: OutlineInputBorder(),
                 hintText: "Digite sua senha",
                 prefixIcon: Icon(Icons.lock),
@@ -159,26 +159,23 @@ class _SignUpState extends State<SignUp> {
                 SizedBox(width: 8),
                 Text(
                   "Concordo com os termos de uso",
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                  style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white),
                 ),
               ],
             ),
             SizedBox(height: 16),
-            // Botão de cadastro, ativado apenas se os termos forem aceitos
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: _isChecked
-                      ? () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    MainScreen(initialIndex: 0)),
-                          );
-                        }
-                      : null, // Habilita o botão somente se o checkbox estiver marcado
+                  onPressed: _isChecked? () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              MainScreen(initialIndex: 0)),
+                    );
+                  } : null, 
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFCDA68C), // Cor do botão
                     foregroundColor: Colors.black, // Cor do texto
@@ -191,7 +188,7 @@ class _SignUpState extends State<SignUp> {
                     "Registrar",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Colors.white70,
+                      color: Colors.white,
                     ),
                   ),
                 ),

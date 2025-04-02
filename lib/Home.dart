@@ -92,24 +92,16 @@ class _HomeState extends State<Home> {
               );
             },
             child: Container(
-              width: 350, // Define apenas a largura fixa
+              width: 350,
               decoration: BoxDecoration(
                 color: const Color(0xFFCDA68C),
                 borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black,
-                    blurRadius: 5,
-                    spreadRadius: 1,
-                  ),
-                ],
               ),
               margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize
-                    .min, // Faz o container ter altura mínima necessária
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
                     children: [

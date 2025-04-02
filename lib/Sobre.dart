@@ -16,7 +16,7 @@ class _SobreState extends State<Sobre> {
         title: Text(
           "Sobre o App",
           style: TextStyle(
-            color: Colors.black,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -24,7 +24,7 @@ class _SobreState extends State<Sobre> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Colors.black,
+            color: Colors.white,
           ),
           onPressed: () {
             Navigator.pop(context); // Volta para a tela anterior
@@ -50,7 +50,9 @@ class _SobreState extends State<Sobre> {
                 child: ListTile(
                   title: const Text(
                     'Versão',
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
@@ -59,7 +61,7 @@ class _SobreState extends State<Sobre> {
                 child: ListTile(
                   title: const Text(
                     'Sobre sua conta',
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
               ),
@@ -68,7 +70,7 @@ class _SobreState extends State<Sobre> {
                 child: ListTile(
                   title: const Text(
                     'Politica de privacidade',
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
               ),
@@ -77,7 +79,7 @@ class _SobreState extends State<Sobre> {
                 child: ListTile(
                   title: const Text(
                     'Termos de Uso',
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
               ),
@@ -86,7 +88,7 @@ class _SobreState extends State<Sobre> {
                 child: ListTile(
                   title: const Text(
                     'Politicas de Terceiros',
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
               ),
@@ -106,7 +108,7 @@ class _SobreState extends State<Sobre> {
                 'https://github.com/LucasBarros28\n'
                 'https://github.com/rafahcbarbosa\n',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16, color: Colors.black),
+                style: TextStyle(fontSize: 16, color: Colors.white),
               ),
             ),
           ),

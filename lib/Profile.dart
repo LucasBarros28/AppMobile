@@ -32,7 +32,7 @@ class _ProfileState extends State<Profile> {
         title: Text(
           "Lecternus",
           style: TextStyle(
-            color: Colors.black,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -40,7 +40,7 @@ class _ProfileState extends State<Profile> {
           IconButton(
             icon: Icon(
               Icons.settings,
-              color: Colors.black,
+              color: Colors.white,
             ),
             onPressed: () {
               Navigator.push(
@@ -75,7 +75,7 @@ class _ProfileState extends State<Profile> {
                       Text(
                         "Alex Marques",
                         style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                            fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
                       ),
                       SizedBox(height: 8),
                       Row(
@@ -85,8 +85,9 @@ class _ProfileState extends State<Profile> {
                             children: [
                               Text("0",
                                   style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              Text("Reviews"),
+                                      TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                              Text("Reviews",
+                              style: TextStyle(color: Colors.white),),
                             ],
                           ),
                           SizedBox(width: 16),
@@ -94,8 +95,9 @@ class _ProfileState extends State<Profile> {
                             children: [
                               Text("0",
                                   style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              Text("Leitores"),
+                                      TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                              Text("Leitores",
+                              style: TextStyle(color: Colors.white),),
                             ],
                           ),
                           SizedBox(width: 16),
@@ -103,8 +105,9 @@ class _ProfileState extends State<Profile> {
                             children: [
                               Text("0",
                                   style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              Text("Seguindo"),
+                                      TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                              Text("Seguindo",
+                              style: TextStyle(color: Colors.white),),
                             ],
                           ),
                         ],
@@ -117,7 +120,7 @@ class _ProfileState extends State<Profile> {
             SizedBox(height: 16),
             Text(
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum justo purus, nec pellentesque arcu posuere suscipit.",
-              style: TextStyle(fontSize: 14),
+              style: TextStyle(fontSize: 14, color: Colors.white),
             ),
           ],
         ),

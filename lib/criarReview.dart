@@ -64,17 +64,6 @@ class _criarReviewState extends State<Criarreview> {
                     Container(
                       width: 150,
                       height: 200,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 5,
-                            spreadRadius: 2,
-                          ),
-                        ],
-                      ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Image.asset(
@@ -103,7 +92,6 @@ class _criarReviewState extends State<Criarreview> {
                               filled: true,
                               fillColor: Color(0xFFCDA68C), // Cor do fundo
                               hintText: "Digite algo",
-                              hintStyle: TextStyle(color: Colors.white,),
                               border: OutlineInputBorder(),
                             ),
                           ),
@@ -121,7 +109,6 @@ class _criarReviewState extends State<Criarreview> {
                               filled: true,
                               fillColor: Color(0xFFCDA68C),
                               hintText: 'Digite o nome do autor',
-                              hintStyle: TextStyle(color: Colors.white,),
                               border: OutlineInputBorder(),
                             ),
                           ),
@@ -159,7 +146,6 @@ class _criarReviewState extends State<Criarreview> {
                 filled: true,
                 fillColor: Color(0xFFCDA68C),
                 hintText: 'Digite um texto grande aqui...',
-                hintStyle: TextStyle(color: Colors.white,),
                 border: OutlineInputBorder(),
               ),
             ),

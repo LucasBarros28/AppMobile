@@ -32,6 +32,7 @@ class _SignInState extends State<SignIn> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height: 50,),
             Center(
                 child: Column(
               children: [
@@ -52,7 +53,7 @@ class _SignInState extends State<SignIn> {
                   "Lecternus",
                   style: TextStyle(
                     fontSize: 20,
-                    color: Colors.black,
+                    color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
                 )
@@ -148,7 +149,7 @@ class _SignInState extends State<SignIn> {
                   child: Text(
                     "Ainda não tem uma conta? Cadastre-se",
                     style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         decoration: TextDecoration.underline,
                         fontWeight: FontWeight.w600),
                   ),
