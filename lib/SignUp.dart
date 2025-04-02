@@ -68,7 +68,10 @@ class _SignUpState extends State<SignUp> {
                 fillColor: Color(0xFFCDA68C),
                 border: OutlineInputBorder(),
                 hintText: "Nome completo",
-                prefixIcon: Icon(Icons.account_circle),
+                hintStyle: TextStyle(
+                  color: const Color(0xFF57362B),
+                ),
+                prefixIcon: Icon(Icons.account_circle, color: const Color(0xFF57362B),),
               ),
             ),
             SizedBox(height: 16),
@@ -84,7 +87,10 @@ class _SignUpState extends State<SignUp> {
                 fillColor: Color(0xFFCDA68C),
                 border: OutlineInputBorder(),
                 hintText: "Digite seu e-mail",
-                prefixIcon: Icon(Icons.email),
+                hintStyle: TextStyle(
+                  color: const Color(0xFF57362B),
+                ),
+                prefixIcon: Icon(Icons.email, color: const Color(0xFF57362B)),
               ),
             ),
             SizedBox(height: 16),
@@ -101,7 +107,10 @@ class _SignUpState extends State<SignUp> {
                 fillColor: Color(0xFFCDA68C),
                 border: OutlineInputBorder(),
                 hintText: "(00) 00000-0000",
-                prefixIcon: Icon(Icons.phone),
+                hintStyle: TextStyle(
+                  color: const Color(0xFF57362B),
+                ),
+                prefixIcon: Icon(Icons.phone, color: const Color(0xFF57362B)),
               ),
             ),
             SizedBox(height: 16),
@@ -117,7 +126,10 @@ class _SignUpState extends State<SignUp> {
                 fillColor: Color(0xFFCDA68C),
                 border: OutlineInputBorder(),
                 hintText: "Digite sua senha",
-                prefixIcon: Icon(Icons.lock),
+                hintStyle: TextStyle(
+                  color: const Color(0xFF57362B),
+                ),
+                prefixIcon: Icon(Icons.lock, color: const Color(0xFF57362B)),
                 suffixIcon: IconButton(
                   icon: Icon(
                     _obscureText ? Icons.visibility_off : Icons.visibility,
