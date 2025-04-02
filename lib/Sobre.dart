@@ -20,7 +20,7 @@ class _SobreState extends State<Sobre> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: const Color(0xFF6D3701),
+        backgroundColor: const Color(0xFF57362B),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
@@ -31,7 +31,7 @@ class _SobreState extends State<Sobre> {
           },
         ),
       ),
-      backgroundColor: const Color(0xFF6D3701),
+      backgroundColor: const Color(0xFF57362B),
       body: Stack(
         children: [
           ListView(

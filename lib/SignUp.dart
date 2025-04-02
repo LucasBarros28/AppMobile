@@ -27,7 +27,7 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF6D3701),
+        backgroundColor: Color(0xFF57362B),
         automaticallyImplyLeading: false,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -50,7 +50,7 @@ class _SignUpState extends State<SignUp> {
           ],
         ),
       ),
-      backgroundColor: const Color(0xFF6D3701),
+      backgroundColor: const Color(0xFF57362B),
       body: Padding(
         padding: EdgeInsets.all(16),
         child: Column(
@@ -65,7 +65,7 @@ class _SignUpState extends State<SignUp> {
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Color(0xFFAC842D),
+                fillColor: Color(0xFFCDA68C),
                 border: OutlineInputBorder(),
                 hintText: "Nome completo",
                 prefixIcon: Icon(Icons.account_circle),
@@ -81,7 +81,7 @@ class _SignUpState extends State<SignUp> {
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Color(0xFFAC842D),
+                fillColor: Color(0xFFCDA68C),
                 border: OutlineInputBorder(),
                 hintText: "Digite seu e-mail",
                 prefixIcon: Icon(Icons.email),
@@ -98,7 +98,7 @@ class _SignUpState extends State<SignUp> {
               inputFormatters: [maskFormatter], // Aplica a máscara
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Color(0xFFAC842D),
+                fillColor: Color(0xFFCDA68C),
                 border: OutlineInputBorder(),
                 hintText: "(00) 00000-0000",
                 prefixIcon: Icon(Icons.phone),
@@ -180,7 +180,7 @@ class _SignUpState extends State<SignUp> {
                         }
                       : null, // Habilita o botão somente se o checkbox estiver marcado
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFAC842D), // Cor do botão
+                    backgroundColor: const Color(0xFFCDA68C), // Cor do botão
                     foregroundColor: Colors.black, // Cor do texto
                     padding: EdgeInsets.symmetric(horizontal: 40, vertical: 12),
                     shape: RoundedRectangleBorder(
