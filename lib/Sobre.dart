@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Sobre extends StatefulWidget {
   @override
@@ -6,8 +8,12 @@ class Sobre extends StatefulWidget {
 }
 
 class _SobreState extends State<Sobre> {
-  TextEditingController _textEditingController =
-      TextEditingController(); // Instanciar o objeto para controlar o campo de texto
+  final List<Map<String, String>> githubLinks = [
+    {'name': 'Alex Marques', 'url': 'https://github.com/AlexMarques03'},
+    {'name': 'Charles Meira', 'url': 'https://github.com/CharlesMeira'},
+    {'name': 'Lucas Barros', 'url': 'https://github.com/LucasBarros28'},
+    {'name': 'Rafael Barbosa', 'url': 'https://github.com/rafahcbarbosa'},
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +33,7 @@ class _SobreState extends State<Sobre> {
             color: Colors.white,
           ),
           onPressed: () {
-            Navigator.pop(context); // Volta para a tela anterior
+            Navigator.pop(context);
           },
         ),
       ),
@@ -36,61 +42,52 @@ class _SobreState extends State<Sobre> {
         children: [
           ListView(
             children: [
-              InkWell(
+              ListTile(
+                title: const Text(
+                  'Versão',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
                 onTap: () {
                   showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: Text("Versão"),
-                          content: Text("1.0.0"),
-                        );
-                      });
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text("Versão"),
+                        content: Text("1.0.0"),
+                      );
+                    },
+                  );
                 },
-                child: ListTile(
-                  title: const Text(
-                    'Versão',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
               ),
-              InkWell(
+              ListTile(
+                title: const Text(
+                  'Sobre sua conta',
+                  style: TextStyle(color: Colors.white),
+                ),
                 onTap: () => print('Sobre sua conta'),
-                child: ListTile(
-                  title: const Text(
-                    'Sobre sua conta',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
               ),
-              InkWell(
-                onTap: () => print('Politica de privacidade'),
-                child: ListTile(
-                  title: const Text(
-                    'Politica de privacidade',
-                    style: TextStyle(color: Colors.white),
-                  ),
+              ListTile(
+                title: const Text(
+                  'Política de Privacidade',
+                  style: TextStyle(color: Colors.white),
                 ),
+                onTap: () => print('Política de privacidade'),
               ),
-              InkWell(
+              ListTile(
+                title: const Text(
+                  'Termos de Uso',
+                  style: TextStyle(color: Colors.white),
+                ),
                 onTap: () => print('Termos de Uso'),
-                child: ListTile(
-                  title: const Text(
-                    'Termos de Uso',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
               ),
-              InkWell(
-                onTap: () => print('Politicas de Terceiros'),
-                child: ListTile(
-                  title: const Text(
-                    'Politicas de Terceiros',
-                    style: TextStyle(color: Colors.white),
-                  ),
+              ListTile(
+                title: const Text(
+                  'Políticas de Terceiros',
+                  style: TextStyle(color: Colors.white),
                 ),
+                onTap: () => print('Políticas de Terceiros'),
               ),
             ],
           ),
@@ -98,17 +95,48 @@ class _SobreState extends State<Sobre> {
             alignment: Alignment.bottomCenter,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'App Criado por Charles, Rafael, Alex e Lucas. '
-                'Alunos do curso de Engenharia da Computação da '
-                'Pontifícia Universidade Católica de Minas Gerais. '
-                'Todos os direitos reservados aos Criadores do App.\n'
-                'https://github.com/AlexMarques03\n'
-                'https://github.com/CharlesMeira\n'
-                'https://github.com/LucasBarros28\n'
-                'https://github.com/rafahcbarbosa\n',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16, color: Colors.white),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'App Criado por Charles, Rafael, Alex e Lucas.\n'
+                    'Alunos do curso de Engenharia da Computação da\n'
+                    'Pontifícia Universidade Católica de Minas Gerais.\n'
+                    'Todos os direitos reservados aos Criadores do App.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  ),
+                  SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: githubLinks.map((link) {
+                      return Row(
+                        children: [
+                          Column(
+                            children: [
+                              IconButton(
+                                icon: FaIcon(FontAwesomeIcons.github,
+                                    color: Colors.white),
+                                onPressed: () async {
+                                  final url = link['url']!;
+                                  if (await canLaunch(url)) {
+                                    await launch(url);
+                                  }
+                                },
+                              ),
+                              Text(
+                                link['name']!,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 12),
+                              ),
+                            ],
+                          ),
+                          SizedBox(width: 10),
+                        ],
+                      );
+                    }).toList(),
+                  ),
+                ],
               ),
             ),
           ),
