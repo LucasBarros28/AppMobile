@@ -27,7 +27,7 @@ class _ReviewState extends State<Review> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF6D3701),
+        backgroundColor: const Color(0xFF57362B),
         automaticallyImplyLeading: false,
         title: Text(
           "Lecternus",
@@ -48,7 +48,7 @@ class _ReviewState extends State<Review> {
           ),
         ],
       ),
-      backgroundColor: const Color(0xFF6D3701),
+      backgroundColor: const Color(0xFF57362B),
       body: Padding(
         padding: EdgeInsets.all(16),
         child: Column(
@@ -127,7 +127,7 @@ class _ReviewState extends State<Review> {
               maxLines: 5,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Color(0xFFAC842D),
+                fillColor: Color(0xFFCDA68C),
                 hintText: 'Digite um texto grande aqui...',
                 border: OutlineInputBorder(),
               ),
@@ -146,7 +146,7 @@ class _ReviewState extends State<Review> {
                       color: Colors.white), // Cor do texto para branco
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFAC842D), // Cor do botão
+                  backgroundColor: const Color(0xFFCDA68C), // Cor do botão
                   padding:
                       EdgeInsets.symmetric(vertical: 15), // Espaçamento interno
                   textStyle: TextStyle(fontSize: 16), // Estilo do texto

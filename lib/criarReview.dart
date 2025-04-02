@@ -27,17 +27,17 @@ class _criarReviewState extends State<Criarreview> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF6D3701),
+        backgroundColor: const Color(0xFF57362B),
         automaticallyImplyLeading: false,
         title: Text(
           "Lecternus",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         actions: [
           IconButton(
             icon: Icon(
               Icons.settings,
-              color: Colors.black,
+              color: Colors.white,
             ),
             onPressed: () {
               Navigator.push(
@@ -48,7 +48,7 @@ class _criarReviewState extends State<Criarreview> {
           ),
         ],
       ),
-      backgroundColor: const Color(0xFF6D3701),
+      backgroundColor: const Color(0xFF57362B),
       body: Padding(
         padding: EdgeInsets.all(16),
         child: Column(
@@ -95,14 +95,15 @@ class _criarReviewState extends State<Criarreview> {
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black54,
+                              color: Colors.white,
                             ),
                           ),
                           TextField(
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Color(0xFFAC842D), // Cor do fundo
+                              fillColor: Color(0xFFCDA68C), // Cor do fundo
                               hintText: "Digite algo",
+                              hintStyle: TextStyle(color: Colors.white,),
                               border: OutlineInputBorder(),
                             ),
                           ),
@@ -112,14 +113,15 @@ class _criarReviewState extends State<Criarreview> {
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black54,
+                              color: Colors.white,
                             ),
                           ),
                           TextField(
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Color(0xFFAC842D),
+                              fillColor: Color(0xFFCDA68C),
                               hintText: 'Digite o nome do autor',
+                              hintStyle: TextStyle(color: Colors.white,),
                               border: OutlineInputBorder(),
                             ),
                           ),
@@ -133,7 +135,7 @@ class _criarReviewState extends State<Criarreview> {
                   left: 125,
                   child: FloatingActionButton(
                     mini: true,
-                    backgroundColor: const Color(0xFFAC842D),
+                    backgroundColor: const Color(0xFFCDA68C),
                     onPressed: () {
                       print("Botão pressionado!");
                     },
@@ -148,15 +150,16 @@ class _criarReviewState extends State<Criarreview> {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Colors.black54,
+                color: Colors.white,
               ),
             ),
             TextField(
               maxLines: 5,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Color(0xFFAC842D),
+                fillColor: Color(0xFFCDA68C),
                 hintText: 'Digite um texto grande aqui...',
+                hintStyle: TextStyle(color: Colors.white,),
                 border: OutlineInputBorder(),
               ),
             ),
@@ -168,16 +171,15 @@ class _criarReviewState extends State<Criarreview> {
                   // Ação para salvar
                   print("Salvar pressionado");
                 },
-                child: Text(
-                  'Salvar',
-                  style: TextStyle(
-                      color: Colors.white), // Cor do texto para branco
-                ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFAC842D), // Cor do botão
+                  backgroundColor: const Color(0xFFCDA68C), // Cor do botão
                   padding:
                       EdgeInsets.symmetric(vertical: 15), // Espaçamento interno
                   textStyle: TextStyle(fontSize: 16), // Estilo do texto
+                ),
+                child: Text(
+                  'Salvar',
+                  style: TextStyle(color: Colors.white), // Cor do texto para branco
                 ),
               ),
             ),

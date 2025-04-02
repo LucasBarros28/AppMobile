@@ -19,20 +19,22 @@ class _ConfigState extends State<Config> {
         title: Text(
           "Configurações",
           style: TextStyle(
-            color: Colors.black,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: const Color(0xFF6D3701),
+        backgroundColor: const Color(0xFF57362B),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,
-            color: Colors.black,),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
           onPressed: () {
             Navigator.pop(context); // Volta para a tela anterior
           },
         ),
       ),
-      backgroundColor: const Color(0xFF6D3701),
+      backgroundColor: const Color(0xFF57362B),
       body: Container(
         child: ListView(
           children: [
@@ -42,35 +44,43 @@ class _ConfigState extends State<Config> {
               child: ListTile(
                 leading: const Icon(
                   Icons.smartphone,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
                 title: const Text(
                   'Configurações de tela',
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.white),
                 ),
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
               ),
             ),
 
             // Switch de notificações
             SwitchListTile(
-              inactiveTrackColor: const Color(0xFFAC842D),
-              inactiveThumbColor: Colors.black,
-              activeColor: const Color(0xFFAC842D),
+              inactiveTrackColor:Colors.white, // Define a cor da trilha inativa
+              inactiveThumbColor: const Color(0xFF57362B), // Cor do botão inativo
+              activeColor: Colors.white, // Cor do botão ativo
+              trackOutlineColor: WidgetStateProperty.resolveWith(
+                (Set<WidgetState> states) {
+                  if (!states.contains(WidgetState.selected)) {
+                    return const Color(0xFF57362B); // Contorno branco quando inativo
+                  }
+                  return null; // Usa a cor padrão quando ativo
+                },
+              ),
               title: Row(
                 children: const [
                   Icon(
                     Icons.notifications,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                   SizedBox(width: 10),
                   Text(
                     "Notificações",
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.white,
                     ),
                   ),
                 ],
@@ -83,22 +93,23 @@ class _ConfigState extends State<Config> {
                 print("Notificações: $valor");
               },
             ),
+
             InkWell(
               onTap: () => print('Configurações de segurança'),
               child: ListTile(
                 leading: const Icon(
                   Icons.password,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
                 title: const Text(
                   'Segurança',
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -114,17 +125,17 @@ class _ConfigState extends State<Config> {
               child: ListTile(
                 leading: const Icon(
                   Icons.info,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
                 title: const Text(
                   'Sobre o App',
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
               ),
             ),

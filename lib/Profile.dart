@@ -27,7 +27,7 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF6D3701),
+        backgroundColor: Color(0xFF57362B),
         automaticallyImplyLeading: false,
         title: Text(
           "Lecternus",
@@ -51,7 +51,7 @@ class _ProfileState extends State<Profile> {
           ),
         ],
       ),
-      backgroundColor: const Color(0xFF6D3701),
+      backgroundColor: const Color(0xFF57362B),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(

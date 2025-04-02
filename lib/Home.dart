@@ -52,7 +52,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF6D3701),
+      backgroundColor: const Color(0xFF57362B),
       body: ListView(
         children: [
           AppBar(
@@ -64,7 +64,7 @@ class _HomeState extends State<Home> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            backgroundColor: const Color(0xFF6D3701),
+            backgroundColor: const Color(0xFF57362B),
             actions: [
               IconButton(
                 icon: Icon(
@@ -91,7 +91,7 @@ class _HomeState extends State<Home> {
             child: Container(
               width: 350, // Define apenas a largura fixa
               decoration: BoxDecoration(
-                color: const Color(0xFFAC842D),
+                color: const Color(0xFFCDA68C),
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: [
                   BoxShadow(
@@ -186,7 +186,7 @@ class _HomeState extends State<Home> {
                           print("Seguir");
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF6D3701),
+                          backgroundColor: const Color(0xFF57362B),
                           padding: EdgeInsets.symmetric(
                               horizontal: 20, vertical: 12),
                           shape: RoundedRectangleBorder(

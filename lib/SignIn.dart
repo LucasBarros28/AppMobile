@@ -26,7 +26,7 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF6D3701),
+      backgroundColor: const Color(0xFF57362B),
       body: Padding(
         padding: EdgeInsets.all(16),
         child: Column(
@@ -71,7 +71,7 @@ class _SignInState extends State<SignIn> {
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Color(0xFFAC842D),
+                fillColor: Color(0xFFCDA68C),
                 border: OutlineInputBorder(),
                 hintText: "Digite seu e-mail ou nome de usuario",
                 prefixIcon: Icon(Icons.email),
@@ -91,7 +91,7 @@ class _SignInState extends State<SignIn> {
               obscureText: _obscureText,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Color(0xFFAC842D),
+                fillColor: Color(0xFFCDA68C),
                 border: OutlineInputBorder(),
                 hintText: "Digite sua senha",
                 prefixIcon: Icon(Icons.lock),
@@ -120,7 +120,7 @@ class _SignInState extends State<SignIn> {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFAC842D),
+                    backgroundColor: const Color(0xFFCDA68C),
                     foregroundColor: Colors.white,
                     padding: EdgeInsets.symmetric(horizontal: 40, vertical: 12),
                     shape: RoundedRectangleBorder(
