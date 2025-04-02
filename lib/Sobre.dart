@@ -9,11 +9,25 @@ class Sobre extends StatefulWidget {
 
 class _SobreState extends State<Sobre> {
   final List<Map<String, String>> githubLinks = [
-    {'name': 'Alex Marques', 'url': 'https://github.com/AlexMarques03'},
+    {'name': 'Alex Marques', 'url': 'https://github.com/AlexMarques00'},
     {'name': 'Charles Meira', 'url': 'https://github.com/CharlesMeira'},
     {'name': 'Lucas Barros', 'url': 'https://github.com/LucasBarros28'},
     {'name': 'Rafael Barbosa', 'url': 'https://github.com/rafahcbarbosa'},
   ];
+
+  Future<void> _launchURL(String url) async {
+  Uri uri = Uri.parse(url);
+  
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(
+      uri, 
+      mode: LaunchMode.externalApplication, // Abre no navegador padrão
+    );
+  } else {
+    print("Erro ao abrir a URL: $url");
+    throw 'Não foi possível abrir: $url';
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -99,10 +113,7 @@ class _SobreState extends State<Sobre> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'App Criado por Charles, Rafael, Alex e Lucas.\n'
-                    'Alunos do curso de Engenharia da Computação da\n'
-                    'Pontifícia Universidade Católica de Minas Gerais.\n'
-                    'Todos os direitos reservados aos Criadores do App.',
+                    'App Criado por Charles, Rafael, Alex e Lucas. Alunos do curso de Engenharia da Computação da Pontifícia Universidade Católica de Minas Gerais. Todos os direitos reservados aos Criadores do App.',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 16, color: Colors.white),
                   ),
@@ -117,12 +128,7 @@ class _SobreState extends State<Sobre> {
                               IconButton(
                                 icon: FaIcon(FontAwesomeIcons.github,
                                     color: Colors.white),
-                                onPressed: () async {
-                                  final url = link['url']!;
-                                  if (await canLaunch(url)) {
-                                    await launch(url);
-                                  }
-                                },
+                                onPressed: () => _launchURL(link['url']!),
                               ),
                               Text(
                                 link['name']!,
