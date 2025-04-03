@@ -1,5 +1,5 @@
-import 'package:app_livros2/Home.dart';
-import 'package:app_livros2/main.dart';
+import 'Home.dart';
+import 'main.dart';
 import 'package:flutter/material.dart';
 import 'SignIn.dart';
 import 'Profile.dart';

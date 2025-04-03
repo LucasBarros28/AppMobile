@@ -1,4 +1,4 @@
-name: app_livros2
+name: Lecternus
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -43,7 +43,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-    
+  flutter_launcher_icons: ^0.13.1
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -54,7 +54,12 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logoTeste.png"
+  adaptive_icon_background: "#ffffff" # Cor de fundo (Android)
+  adaptive_icon_foreground: "assets/images/logoTeste.png" # Ícone adaptável (Android)
 # The following section is specific to Flutter packages.
 flutter:
 
