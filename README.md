@@ -1,5 +1,4 @@
-# app_livros2
-
+# Lecternus
 A new Flutter project.
 
 ## Getting Started
