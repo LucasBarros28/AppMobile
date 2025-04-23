@@ -1,9 +1,9 @@
-import 'Home.dart';
-import 'main.dart';
+import 'package:lecternus/Home.dart';
+import 'package:lecternus/main.dart';
 import 'package:flutter/material.dart';
-import 'SignUp.dart';
-import 'Profile.dart';
-import 'bottom_nav_bar.dart';
+import 'package:lecternus/SignUp.dart';
+import 'package:lecternus/Profile.dart';
+import 'package:lecternus/bottom_nav_bar.dart';
 import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 

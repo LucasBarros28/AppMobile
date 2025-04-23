@@ -1,6 +1,6 @@
-import 'SignIn.dart';
+import 'package:lecternus/SignIn.dart';
 import 'package:flutter/material.dart';
-import 'Sobre.dart';
+import 'package:lecternus/Sobre.dart';
 
 class Config extends StatefulWidget {
   @override

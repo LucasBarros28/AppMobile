@@ -1,6 +1,6 @@
 {
-    "name": "app_livros2",
-    "short_name": "app_livros2",
+    "name": "banco_dados_app",
+    "short_name": "banco_dados_app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

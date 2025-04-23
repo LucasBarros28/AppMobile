@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'Config.dart';
-import 'Sobre.dart';
-import 'bottom_nav_bar.dart';
-import 'Home.dart';
-import 'main.dart';
+import 'package:lecternus/Config.dart';
+import 'package:lecternus/Sobre.dart';
+import 'package:lecternus/bottom_nav_bar.dart';
+import 'package:lecternus/Home.dart';
+import 'package:lecternus/main.dart';
 
 class Profile extends StatefulWidget {
   @override

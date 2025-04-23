@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'Home.dart';
-import 'Profile.dart';
-import 'criarReview.dart';
-import 'SignIn.dart';
-import 'bottom_nav_bar.dart';
-import 'criarReview.dart';
+import 'package:lecternus/Home.dart';
+import 'package:lecternus/Profile.dart';
+import 'package:lecternus/criarReview.dart';
+import 'package:lecternus/SignIn.dart';
+import 'package:lecternus/bottom_nav_bar.dart';
+import 'package:lecternus/criarReview.dart';
 
 void main() {
   runApp(MyApp());

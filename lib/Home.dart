@@ -1,11 +1,11 @@
 import 'dart:ui';
-import 'Review.dart';
-import 'Profile.dart';
-import 'criarReview.dart';
+import 'package:lecternus/Review.dart';
+import 'package:lecternus/Profile.dart';
+import 'package:lecternus/criarReview.dart';
 import 'package:flutter/material.dart';
-import 'Config.dart';
-import 'Sobre.dart';
-import 'bottom_nav_bar.dart';
+import 'package:lecternus/Config.dart';
+import 'package:lecternus/Sobre.dart';
+import 'package:lecternus/bottom_nav_bar.dart';
 
 class Home extends StatefulWidget {
   @override

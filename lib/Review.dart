@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'Config.dart';
-import 'bottom_nav_bar.dart';
-import 'main.dart';
+import 'package:lecternus/Config.dart';
+import 'package:lecternus/bottom_nav_bar.dart';
+import 'package:lecternus/main.dart';
 
 class Review extends StatefulWidget {
   final String reviewText;
