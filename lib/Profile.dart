@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lecternus/Config.dart';
-import 'package:lecternus/Sobre.dart';
-import 'package:lecternus/bottom_nav_bar.dart';
-import 'package:lecternus/Home.dart';
 import 'package:lecternus/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -11,7 +9,21 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  int _selectedIndex = 3; // Define o índice da aba "Perfil"
+  int _selectedIndex = 4; // Índice do perfil na barra de navegação
+  String _userName = 'Carregando...';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _userName = prefs.getString('nome') ?? 'Nome não definido';
+    });
+  }
 
   void _onItemTapped(int index) {
     if (index != _selectedIndex) {
@@ -38,10 +50,7 @@ class _ProfileState extends State<Profile> {
         ),
         actions: [
           IconButton(
-            icon: Icon(
-              Icons.settings,
-              color: Colors.white,
-            ),
+            icon: Icon(Icons.settings, color: Colors.white),
             onPressed: () {
               Navigator.push(
                 context,
@@ -64,7 +73,9 @@ class _ProfileState extends State<Profile> {
                   padding: EdgeInsets.all(4),
                   child: CircleAvatar(
                     radius: 40,
-                    backgroundImage: AssetImage('assets/images/profile.webp'),
+                    backgroundColor: Color(0xFFCDA68C),
+                    child:
+                        Icon(Icons.person, size: 40, color: Color(0xFF57362B)),
                   ),
                 ),
                 SizedBox(width: 16),
@@ -73,41 +84,46 @@ class _ProfileState extends State<Profile> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Alex Marques",
+                        _userName,
                         style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
                       ),
-                      SizedBox(height: 8),
+                      SizedBox(height: 16),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Column(
                             children: [
                               Text("0",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white)),
                               Text("Reviews",
-                              style: TextStyle(color: Colors.white),),
+                                  style: TextStyle(color: Colors.white)),
                             ],
                           ),
                           SizedBox(width: 16),
                           Column(
                             children: [
                               Text("0",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white)),
                               Text("Leitores",
-                              style: TextStyle(color: Colors.white),),
+                                  style: TextStyle(color: Colors.white)),
                             ],
                           ),
                           SizedBox(width: 16),
                           Column(
                             children: [
                               Text("0",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white)),
                               Text("Seguindo",
-                              style: TextStyle(color: Colors.white),),
+                                  style: TextStyle(color: Colors.white)),
                             ],
                           ),
                         ],
@@ -125,10 +141,6 @@ class _ProfileState extends State<Profile> {
           ],
         ),
       ),
-      /* bottomNavigationBar: BottomNavBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-      ),*/
     );
   }
 }

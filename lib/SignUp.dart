@@ -1,11 +1,8 @@
-import 'package:lecternus/Home.dart';
-import 'package:lecternus/main.dart';
 import 'package:flutter/material.dart';
+import 'package:lecternus/main.dart';
 import 'package:lecternus/SignIn.dart';
-import 'package:lecternus/Profile.dart';
-import 'package:lecternus/bottom_nav_bar.dart';
-import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -15,13 +12,58 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   bool _obscureText = true;
   bool _isChecked = false;
-  TextEditingController _textEditingController = TextEditingController();
+
+  // Controladores para os campos de texto
+  TextEditingController _nomeController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _telefoneController = TextEditingController();
+  TextEditingController _senhaController = TextEditingController();
 
   // Máscara para formatar telefone
   final maskFormatter = MaskTextInputFormatter(
     mask: '(##) #####-####',
-    filter: {"#": RegExp(r'[0-9]')}, // Apenas números
+    filter: {"#": RegExp(r'[0-9]')},
   );
+
+  // Função para salvar os dados do usuário
+  Future<void> _registerUser() async {
+    if (!_isChecked) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Você deve aceitar os termos de uso')),
+      );
+      return;
+    }
+
+    if (_nomeController.text.isEmpty ||
+        _emailController.text.isEmpty ||
+        _telefoneController.text.isEmpty ||
+        _senhaController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Por favor, preencha todos os campos')),
+      );
+      return;
+    }
+
+    try {
+      // Salva os dados do usuário
+      await saveUserProfile(
+        _nomeController.text,
+        _emailController.text,
+        _telefoneController.text,
+        _senhaController.text,
+      );
+
+      // Navega para a tela principal após o cadastro
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => MainScreen(initialIndex: 0)),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao salvar dados: $e')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,81 +101,90 @@ class _SignUpState extends State<SignUp> {
             children: [
               Text(
                 "Nome",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white),
               ),
               SizedBox(height: 8),
               TextField(
-                keyboardType: TextInputType.emailAddress,
+                controller: _nomeController,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Color(0xFFCDA68C),
                   border: OutlineInputBorder(),
                   hintText: "Nome completo",
-                  hintStyle: TextStyle(
-                    color: const Color(0xFF57362B),
-                  ),
-                  prefixIcon: Icon(Icons.account_circle, color: const Color(0xFF57362B),),
+                  hintStyle: TextStyle(color: const Color(0xFF57362B)),
+                  prefixIcon: Icon(Icons.account_circle,
+                      color: const Color(0xFF57362B)),
                 ),
               ),
               SizedBox(height: 16),
               Text(
                 "E-mail",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white),
               ),
               SizedBox(height: 8),
               TextField(
+                controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Color(0xFFCDA68C),
                   border: OutlineInputBorder(),
                   hintText: "Digite seu e-mail",
-                  hintStyle: TextStyle(
-                    color: const Color(0xFF57362B),
-                  ),
+                  hintStyle: TextStyle(color: const Color(0xFF57362B)),
                   prefixIcon: Icon(Icons.email, color: const Color(0xFF57362B)),
                 ),
               ),
               SizedBox(height: 16),
               Text(
                 "Telefone",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white),
               ),
               SizedBox(height: 8),
               TextField(
+                controller: _telefoneController,
                 keyboardType: TextInputType.number,
-                inputFormatters: [maskFormatter], // Aplica a máscara
+                inputFormatters: [maskFormatter],
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Color(0xFFCDA68C),
                   border: OutlineInputBorder(),
                   hintText: "(00) 00000-0000",
-                  hintStyle: TextStyle(
-                    color: const Color(0xFF57362B),
-                  ),
+                  hintStyle: TextStyle(color: const Color(0xFF57362B)),
                   prefixIcon: Icon(Icons.phone, color: const Color(0xFF57362B)),
                 ),
               ),
               SizedBox(height: 16),
               Text(
                 "Senha",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white),
               ),
               SizedBox(height: 8),
               TextField(
+                controller: _senhaController,
                 obscureText: _obscureText,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Color(0xFFCDA68C),
                   border: OutlineInputBorder(),
                   hintText: "Digite sua senha",
-                  hintStyle: TextStyle(
-                    color: const Color(0xFF57362B),
-                  ),
+                  hintStyle: TextStyle(color: const Color(0xFF57362B)),
                   prefixIcon: Icon(Icons.lock, color: const Color(0xFF57362B)),
                   suffixIcon: IconButton(
                     icon: Icon(
                       _obscureText ? Icons.visibility_off : Icons.visibility,
+                      color: const Color(0xFF57362B),
                     ),
                     onPressed: () {
                       setState(() {
@@ -144,7 +195,6 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
               SizedBox(height: 16),
-              // Checkbox para aceitar os termos de uso
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -172,7 +222,8 @@ class _SignUpState extends State<SignUp> {
                   SizedBox(width: 8),
                   Text(
                     "Concordo com os termos de uso",
-                    style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600, color: Colors.white),
                   ),
                 ],
               ),
@@ -181,18 +232,12 @@ class _SignUpState extends State<SignUp> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                    onPressed: _isChecked? () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                MainScreen(initialIndex: 0)),
-                      );
-                    } : null, 
+                    onPressed: _isChecked ? _registerUser : null,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFCDA68C), // Cor do botão
-                      foregroundColor: Colors.black, // Cor do texto
-                      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 12),
+                      backgroundColor: const Color(0xFFCDA68C),
+                      foregroundColor: Colors.black,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 40, vertical: 12),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -212,5 +257,15 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
     );
+  }
+
+  // Função para salvar os dados do perfil (já existente no seu código)
+  Future<void> saveUserProfile(
+      String nome, String email, String telefone, String senha) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('nome', nome);
+    await prefs.setString('email', email);
+    await prefs.setString('telefone', telefone);
+    await prefs.setString('senha', senha);
   }
 }

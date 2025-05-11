@@ -13,12 +13,12 @@ dependencies:
   flutter:
     sdk: flutter
 
-
   url_launcher: ^6.2.5
   font_awesome_flutter: ^10.7.0
   
   mask_text_input_formatter: ^2.5.0
   cupertino_icons: ^1.0.8
+  shared_preferences: ^2.5.3
 
 dev_dependencies:
   flutter_test:

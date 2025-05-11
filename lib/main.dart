@@ -3,8 +3,11 @@ import 'package:lecternus/Home.dart';
 import 'package:lecternus/Profile.dart';
 import 'package:lecternus/criarReview.dart';
 import 'package:lecternus/SignIn.dart';
+import 'package:lecternus/pesquisar.dart';
+import 'package:lecternus/chat.dart';
 import 'package:lecternus/bottom_nav_bar.dart';
 import 'package:lecternus/criarReview.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MainScreen(), // ⬅ Defina MainScreen como a tela inicial
+      home: SignIn(), //
       routes: {
         "/home": (context) => MainScreen(initialIndex: 0),
         "/pesquisa": (context) => MainScreen(initialIndex: 1),
@@ -46,9 +49,9 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _pages = [
     Home(),
-    Center(child: Text('Pesquisa//Feature futura', style: TextStyle(fontSize: 24))),
+    Pesquisar(),
     Criarreview(),
-    Center(child: Text('Chat//Feature futura', style: TextStyle(fontSize: 24))),
+    Chat(),
     Profile(),
   ];
 

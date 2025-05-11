@@ -1,6 +1,7 @@
 import 'package:lecternus/SignIn.dart';
 import 'package:flutter/material.dart';
 import 'package:lecternus/Sobre.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Config extends StatefulWidget {
   @override
@@ -59,13 +60,16 @@ class _ConfigState extends State<Config> {
 
             // Switch de notificações
             SwitchListTile(
-              inactiveTrackColor:Colors.white, // Define a cor da trilha inativa
-              inactiveThumbColor: const Color(0xFF57362B), // Cor do botão inativo
+              inactiveTrackColor:
+                  Colors.white, // Define a cor da trilha inativa
+              inactiveThumbColor:
+                  const Color(0xFF57362B), // Cor do botão inativo
               activeColor: Colors.white, // Cor do botão ativo
               trackOutlineColor: WidgetStateProperty.resolveWith(
                 (Set<WidgetState> states) {
                   if (!states.contains(WidgetState.selected)) {
-                    return const Color(0xFF57362B); // Contorno branco quando inativo
+                    return const Color(
+                        0xFF57362B); // Contorno branco quando inativo
                   }
                   return null; // Usa a cor padrão quando ativo
                 },
@@ -142,17 +146,51 @@ class _ConfigState extends State<Config> {
             // Botão de deletar conta
             InkWell(
               onTap: () {
-                print("Deleta conta");
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text("Confirmar exclusão"),
+                      content: const Text(
+                          "Tem certeza que deseja deletar sua conta? Esta ação não pode ser desfeita."),
+                      actions: [
+                        TextButton(
+                          child: const Text("Cancelar"),
+                          onPressed: () {
+                            Navigator.of(context).pop(); // Fecha o diálogo
+                          },
+                        ),
+                        TextButton(
+                          child: const Text("Deletar",
+                              style: TextStyle(color: Colors.red)),
+                          onPressed: () async {
+                            final prefs = await SharedPreferences.getInstance();
+                            await prefs.clear(); // Limpa todos os dados
+
+                            Navigator.of(context).pop(); // Fecha o diálogo
+
+                            // Redireciona para a tela de login removendo todas as anteriores
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(builder: (context) => SignIn()),
+                              (Route<dynamic> route) => false,
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
               child: ListTile(
                 leading: const Icon(
                   Icons.delete,
-                  color: Colors.red, // Cor do ícone
+                  color: Colors.red,
                 ),
                 title: const Text(
                   'Deletar conta',
                   style: TextStyle(
-                    color: Colors.red, // Cor do texto
+                    color: Colors.red,
                   ),
                 ),
               ),

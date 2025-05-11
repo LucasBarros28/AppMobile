@@ -16,6 +16,8 @@ class _ReviewState extends State<Review> {
   int _selectedIndex = 2;
   TextEditingController _commentController = TextEditingController();
 
+  List<String> _comments = []; // Lista para armazenar os comentários
+
   void _onItemTapped(int index) {
     if (index != _selectedIndex) {
       Navigator.pushReplacement(
@@ -26,6 +28,15 @@ class _ReviewState extends State<Review> {
     }
   }
 
+  void _addComment() {
+    if (_commentController.text.trim().isNotEmpty) {
+      setState(() {
+        _comments.add(_commentController.text.trim());
+        _commentController.clear();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,24 +44,18 @@ class _ReviewState extends State<Review> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF57362B),
         leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
+          icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pop(context); // Volta para a tela anterior
+            Navigator.pop(context);
           },
         ),
         title: Text(
           "Lecternus",
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white,),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         actions: [
           IconButton(
-            icon: Icon(
-              Icons.settings,
-              color: Colors.white,
-            ),
+            icon: Icon(Icons.settings, color: Colors.white),
             onPressed: () {
               Navigator.push(
                 context,
@@ -132,22 +137,33 @@ class _ReviewState extends State<Review> {
               child: TextField(
                 controller: _commentController,
                 maxLines: 1,
-                style: TextStyle(fontSize: 16, color: Colors.white),
+                style: TextStyle(fontSize: 16, color: Colors.black),
                 decoration: InputDecoration(
                   hintText: 'Escreva seu comentário aqui...',
+                  hintStyle: TextStyle(color: Colors.black54),
                   border: InputBorder.none,
                   suffixIcon: IconButton(
-                    icon: Icon(
-                      Icons.arrow_forward,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      print("Comentário enviado: ${_commentController.text}");
-                    },
+                    icon: Icon(Icons.arrow_forward, color: Colors.black),
+                    onPressed: _addComment,
                   ),
                 ),
               ),
             ),
+            SizedBox(height: 20),
+            ..._comments.reversed.map((comment) => Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Container(
+                    padding: EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.white24,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      comment,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                )),
           ],
         ),
       ),

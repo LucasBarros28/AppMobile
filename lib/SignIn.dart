@@ -1,11 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:lecternus/Home.dart';
 import 'package:lecternus/main.dart';
-import 'package:flutter/material.dart';
 import 'package:lecternus/SignUp.dart';
-import 'package:lecternus/Profile.dart';
 import 'package:lecternus/bottom_nav_bar.dart';
-import 'package:flutter/services.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -14,14 +12,46 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   bool _obscureText = true;
-  bool _isChecked = false;
-  TextEditingController _textEditingController = TextEditingController();
+  TextEditingController _loginController =
+      TextEditingController(); // Para email/nome
+  TextEditingController _senhaController = TextEditingController();
+  String _errorMessage = '';
+  bool _isLoading = false;
 
-  // Máscara para formatar telefone
-  final maskFormatter = MaskTextInputFormatter(
-    mask: '(##) #####-####',
-    filter: {"#": RegExp(r'[0-9]')}, // Apenas números
-  );
+  Future<void> _loginUser() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = '';
+    });
+
+    if (_loginController.text.isEmpty || _senhaController.text.isEmpty) {
+      setState(() {
+        _errorMessage = 'Por favor, preencha todos os campos';
+        _isLoading = false;
+      });
+      return;
+    }
+
+    final prefs = await SharedPreferences.getInstance();
+    final savedEmail = prefs.getString('email') ?? '';
+    final savedNome = prefs.getString('nome') ?? '';
+    final savedSenha = prefs.getString('senha') ?? '';
+
+    // Verifica se o login corresponde ao email OU nome E se a senha está correta
+    if ((_loginController.text == savedEmail ||
+            _loginController.text == savedNome) &&
+        _senhaController.text == savedSenha) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => MainScreen(initialIndex: 0)),
+      );
+    } else {
+      setState(() {
+        _errorMessage = 'E-mail/Nome de usuário ou senha incorretos';
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,36 +64,40 @@ class _SignInState extends State<SignIn> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Center(
-                  child: Column(
-                children: [
-                  ClipRRect(
-                    borderRadius:
-                        BorderRadius.circular(20.0), // Define o raio das bordas
-                    child: Image.asset(
-                      'assets/images/logoTeste.png',
-                      width: 200.0,
-                      height: 200.0,
-                      fit: BoxFit.cover,
+                child: Column(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(20.0),
+                      child: Image.asset(
+                        'assets/images/logoTeste.png',
+                        width: 200.0,
+                        height: 200.0,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    "Lecternus",
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
-                ],
-              )),
-              SizedBox(
-                height: 10,
+                    SizedBox(height: 5),
+                    Text(
+                      "Lecternus",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  ],
+                ),
               ),
+              SizedBox(height: 10),
+              if (_errorMessage.isNotEmpty)
+                Padding(
+                  padding: EdgeInsets.only(bottom: 10),
+                  child: Text(
+                    _errorMessage,
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ),
               Text(
-                "E-mail/Nome de usuario",
+                "E-mail/Nome de usuário",
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -72,12 +106,13 @@ class _SignInState extends State<SignIn> {
               ),
               SizedBox(height: 5),
               TextField(
+                controller: _loginController,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Color(0xFFCDA68C),
                   border: OutlineInputBorder(),
-                  hintText: "Digite seu e-mail ou nome de usuario",
+                  hintText: "Digite seu e-mail ou nome de usuário",
                   hintStyle: TextStyle(
                     color: const Color(0xFF57362B),
                   ),
@@ -95,6 +130,7 @@ class _SignInState extends State<SignIn> {
               ),
               SizedBox(height: 5),
               TextField(
+                controller: _senhaController,
                 obscureText: _obscureText,
                 decoration: InputDecoration(
                   filled: true,
@@ -111,6 +147,7 @@ class _SignInState extends State<SignIn> {
                   suffixIcon: IconButton(
                     icon: Icon(
                       _obscureText ? Icons.visibility_off : Icons.visibility,
+                      color: const Color(0xFF57362B),
                     ),
                     onPressed: () {
                       setState(() {
@@ -120,20 +157,12 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 15,
-              ),
+              SizedBox(height: 15),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MainScreen(initialIndex: 0)),
-                      );
-                    },
+                    onPressed: _isLoading ? null : _loginUser,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFCDA68C),
                       foregroundColor: Colors.white,
@@ -143,10 +172,19 @@ class _SignInState extends State<SignIn> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    child: Text(
-                      "Entrar",
-                      style: TextStyle(fontWeight: FontWeight.w600),
-                    ),
+                    child: _isLoading
+                        ? SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : Text(
+                            "Entrar",
+                            style: TextStyle(fontWeight: FontWeight.w600),
+                          ),
                   ),
                 ],
               ),
