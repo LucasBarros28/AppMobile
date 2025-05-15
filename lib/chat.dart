@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lecternus/Config.dart';
 import 'package:lecternus/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lecternus/SignIn.dart';
+
 
 class Chat extends StatefulWidget {
   @override

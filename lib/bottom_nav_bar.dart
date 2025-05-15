@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import "package:lecternus/Profile.dart";
 import 'package:lecternus/criarReview.dart';
+import 'package:lecternus/SignIn.dart';
+
 
 class BottomNavBar extends StatelessWidget {
   final int currentIndex;

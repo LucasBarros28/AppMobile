@@ -1,41 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:lecternus/ReviewModel.dart';
 import 'package:lecternus/Config.dart';
-import 'package:lecternus/bottom_nav_bar.dart';
-import 'package:lecternus/main.dart';
 
-class Review extends StatefulWidget {
-  final String reviewText;
+class ReviewPage extends StatelessWidget {
+  final ReviewModel review;
 
-  Review({required this.reviewText});
-
-  @override
-  _ReviewState createState() => _ReviewState();
-}
-
-class _ReviewState extends State<Review> {
-  int _selectedIndex = 2;
-  TextEditingController _commentController = TextEditingController();
-
-  List<String> _comments = []; // Lista para armazenar os comentários
-
-  void _onItemTapped(int index) {
-    if (index != _selectedIndex) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => MainScreen(initialIndex: index)),
-      );
-    }
-  }
-
-  void _addComment() {
-    if (_commentController.text.trim().isNotEmpty) {
-      setState(() {
-        _comments.add(_commentController.text.trim());
-        _commentController.clear();
-      });
-    }
-  }
+  const ReviewPage({super.key, required this.review});
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +53,7 @@ class _ReviewState extends State<Review> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Image.asset(
-                      'assets/images/imagem.jpg',
+                      review.imagePath,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -94,20 +64,28 @@ class _ReviewState extends State<Review> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Nome do Livro: Mar azul',
+                        'Livro: ${review.bookTitle}',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 8),
                       Text(
-                        'Nome do Autor: José da Silva',
+                        'Autor: ${review.bookAuthor}',
                         style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          fontSize: 16,
+                          color: Colors.white70,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        '@${review.userName}',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.white54,
+                          fontStyle: FontStyle.italic,
                         ),
                       ),
                     ],
@@ -116,54 +94,17 @@ class _ReviewState extends State<Review> {
               ],
             ),
             SizedBox(height: 20),
-            Container(
-              padding: EdgeInsets.all(20),
-              child: Text(
-                widget.reviewText,
-                style: TextStyle(fontSize: 16, color: Colors.white),
-                textAlign: TextAlign.justify,
-              ),
+            Text(
+              review.reviewTitle,
+              style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.left,
             ),
-            SizedBox(height: 20),
-            Container(
-              width: double.infinity,
-              height: 50,
-              padding: EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                color: Colors.white70,
-                borderRadius: BorderRadius.circular(50),
-                border: Border.all(color: Colors.white38),
-              ),
-              child: TextField(
-                controller: _commentController,
-                maxLines: 1,
-                style: TextStyle(fontSize: 16, color: Colors.black),
-                decoration: InputDecoration(
-                  hintText: 'Escreva seu comentário aqui...',
-                  hintStyle: TextStyle(color: Colors.black54),
-                  border: InputBorder.none,
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.arrow_forward, color: Colors.black),
-                    onPressed: _addComment,
-                  ),
-                ),
-              ),
+            SizedBox(height: 10),
+            Text(
+              review.reviewText,
+              style: TextStyle(fontSize: 16, color: Colors.white),
+              textAlign: TextAlign.justify,
             ),
-            SizedBox(height: 20),
-            ..._comments.reversed.map((comment) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Container(
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.white24,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(
-                      comment,
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                )),
           ],
         ),
       ),

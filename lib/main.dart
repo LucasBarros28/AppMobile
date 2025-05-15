@@ -6,11 +6,31 @@ import 'package:lecternus/SignIn.dart';
 import 'package:lecternus/pesquisar.dart';
 import 'package:lecternus/chat.dart';
 import 'package:lecternus/bottom_nav_bar.dart';
-import 'package:lecternus/criarReview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lecternus/SignIn.dart';
 
-void main() {
-  runApp(MyApp());
+
+// Banco de dados
+import 'package:lecternus/database_helper.dart';
+import 'package:lecternus/reset_db_full_final.dart'; // import do reset
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  try {
+    await resetDatabase(); // apenas para desenvolvimento!
+    await DatabaseHelper().db;
+    runApp(MyApp());
+  } catch (e) {
+    print('Erro ao iniciar o banco de dados: $e');
+    runApp(MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: Text('Erro ao iniciar o banco: $e'),
+        ),
+      ),
+    ));
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -18,7 +38,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SignIn(), //
+      home: SignIn(),
       routes: {
         "/home": (context) => MainScreen(initialIndex: 0),
         "/pesquisa": (context) => MainScreen(initialIndex: 1),
@@ -50,7 +70,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _pages = [
     Home(),
     Pesquisar(),
-    Criarreview(),
+    CriarReview(),
     Chat(),
     Profile(),
   ];

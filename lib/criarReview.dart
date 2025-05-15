@@ -1,260 +1,84 @@
-import 'dart:ui';
-import 'package:lecternus/Review.dart';
-import 'package:lecternus/Profile.dart';
-import 'package:lecternus/criarReview.dart';
 import 'package:flutter/material.dart';
-import 'package:lecternus/Config.dart';
-import 'package:lecternus/Sobre.dart';
-import 'package:lecternus/bottom_nav_bar.dart';
-import 'package:lecternus/Review.dart';
-import 'package:lecternus/ReviewModel.dart';
-import 'package:lecternus/ReviewSoucer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lecternus/database_helper.dart';
 import 'package:lecternus/main.dart';
+import 'package:sqflite_common/sqlite_api.dart';
+import 'package:lecternus/SignIn.dart';
 
-class Criarreview extends StatefulWidget {
+
+class CriarReview extends StatefulWidget {
   @override
   _CriarReviewState createState() => _CriarReviewState();
 }
 
-class _CriarReviewState extends State<Criarreview> {
-  int _selectedIndex = 2;
+class _CriarReviewState extends State<CriarReview> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _resenhaController = TextEditingController();
-  final TextEditingController _nomeLivroController = TextEditingController();
-  final TextEditingController _nomeAutorController = TextEditingController();
-
-  void _onItemTapped(int index) {
-    if (index != _selectedIndex) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => MainScreen(initialIndex: index)),
-      );
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF57362B),
-        automaticallyImplyLeading: false,
-        title: Text(
-          "Lecternus",
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.settings, color: Colors.white),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Config()),
-              );
-            },
-          ),
-        ],
-      ),
-      backgroundColor: const Color(0xFF57362B),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          children: [
-            Padding(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 150,
-                            height: 200,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image.asset(
-                                'assets/images/imagem.jpg',
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Nome do Livro:',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                TextFormField(
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Color(0xFFCDA68C),
-                                    hintText: "Digite o nome do livro",
-                                    hintStyle: TextStyle(
-                                        color: const Color(0xFF57362B)),
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  controller: _nomeLivroController,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Por favor, insira o nome do livro';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                SizedBox(height: 20),
-                                Text(
-                                  'Nome do Autor:',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                TextFormField(
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Color(0xFFCDA68C),
-                                    hintText: 'Digite o nome do autor',
-                                    hintStyle: TextStyle(
-                                        color: const Color(0xFF57362B)),
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  controller: _nomeAutorController,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Por favor, insira o nome do autor';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      Positioned(
-                        bottom: -10,
-                        left: 120,
-                        child: FloatingActionButton(
-                          mini: true,
-                          backgroundColor: const Color(0xFFCDA68C),
-                          onPressed: () {
-                            // Adicionar funcionalidade para selecionar imagem
-                            print("Selecionar imagem do livro");
-                          },
-                          child: Icon(Icons.add, color: Colors.white),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    'Resenha:',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  TextFormField(
-                    maxLines: 13,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Color(0xFFCDA68C),
-                      hintText: 'Digite sua resenha aqui...',
-                      hintStyle: TextStyle(color: const Color(0xFF57362B)),
-                      border: OutlineInputBorder(),
-                    ),
-                    controller: _resenhaController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, escreva sua resenha';
-                      }
-                      if (value.length < 50) {
-                        return 'A resenha deve ter pelo menos 50 caracteres';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 20),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: _salvarReview,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFCDA68C),
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        textStyle: TextStyle(fontSize: 20),
-                      ),
-                      child: Text(
-                        'Salvar',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  final _resenhaController = TextEditingController();
+  final _nomeLivroController = TextEditingController();
+  final _nomeAutorController = TextEditingController();
 
   Future<void> _salvarReview() async {
     if (_formKey.currentState!.validate()) {
       try {
-        // Criar o modelo da review
-        final newReview = ReviewModel(
-          id: DateTime.now().millisecondsSinceEpoch.toString(),
-          userId: 'current_user_id', // Substituir pelo ID do usuário logado
-          userName: 'Nome do Usuário', // Obter do perfil do usuário
-          userImage: 'assets/images/profile.webp', // Imagem do usuário
-          bookTitle: _nomeLivroController.text,
-          reviewText: _resenhaController.text,
-          date: DateTime.now(),
+        final prefs = await SharedPreferences.getInstance();
+        final idUser = prefs.getInt('id_user');
+        final nome = prefs.getString('nome') ?? '';
+
+        if (idUser == null) throw Exception('Usuário não autenticado.');
+
+        final db = await DatabaseHelper().db;
+
+        final profileResult = await db.query(
+          'Profile',
+          where: 'id_user = ?',
+          whereArgs: [idUser],
         );
 
-        // Adicionar ao ReviewSource
-        await ReviewSource.addReview(newReview);
+        if (profileResult.isEmpty) throw Exception('Perfil não localizado.');
 
-        // Mostrar mensagem de sucesso
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Resenha publicada com sucesso!'),
-            backgroundColor: Colors.green,
-          ),
+        final profileId = profileResult.first['id_profile'];
+
+        await db.insert('Review', {
+          'id_profile': profileId,
+          'title_review': _resenhaController.text.substring(0, 20),
+          'title_book': _nomeLivroController.text,
+          'author_review': nome,
+          'author_book': _nomeAutorController.text,
+          'content': _resenhaController.text,
+          'image_path': 'assets/images/imagem.jpg',
+        });
+
+        
+        // Atualiza contador de reviews
+        final reviewCountResult = await db.rawQuery(
+          
+          'SELECT COUNT(*) as total FROM Review WHERE id_profile = ?',
+          [profileId],
+          );
+
+        final reviewCount = reviewCountResult.first['total'] as int;
+
+        await db.update(
+          'Profile',
+          {'count_reviews': reviewCount},
+          where: 'id_profile = ?',
+          whereArgs: [profileId],
         );
 
-        // Limpar os campos
-        _nomeLivroController.clear();
-        _nomeAutorController.clear();
-        _resenhaController.clear();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Resenha publicada com sucesso!'),
+          backgroundColor: Colors.green,
+        ));
 
-        // Opcional: Navegar de volta para a tela inicial
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => MainScreen(initialIndex: 0)),
         );
       } catch (e) {
-        // Mostrar mensagem de erro
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Erro ao publicar resenha: ${e.toString()}'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Erro: ${e.toString()}'),
+          backgroundColor: Colors.red,
+        ));
       }
     }
   }
@@ -265,5 +89,83 @@ class _CriarReviewState extends State<Criarreview> {
     _nomeLivroController.dispose();
     _nomeAutorController.dispose();
     super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF57362B),
+      appBar: AppBar(
+        title: Text('Criar Review'),
+        backgroundColor: const Color(0xFF57362B),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => MainScreen(initialIndex: 0)),
+          ),
+        ),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: [
+              _buildTextField('Nome do Livro', _nomeLivroController),
+              SizedBox(height: 12),
+              _buildTextField('Autor do Livro', _nomeAutorController),
+              SizedBox(height: 12),
+              _buildTextArea('Escreva sua resenha', _resenhaController),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _salvarReview,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFCDA68C),
+                  padding: EdgeInsets.symmetric(vertical: 14),
+                ),
+                child: Text('Publicar', style: TextStyle(color: Colors.white)),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField(String label, TextEditingController controller) {
+    return TextFormField(
+      controller: controller,
+      style: TextStyle(color: Colors.black),
+      validator: (value) =>
+          value == null || value.isEmpty ? 'Campo obrigatório' : null,
+      decoration: InputDecoration(
+        labelText: label,
+        filled: true,
+        fillColor: const Color(0xFFCDA68C),
+        labelStyle: TextStyle(color: const Color(0xFF57362B)),
+        border: OutlineInputBorder(),
+      ),
+    );
+  }
+
+  Widget _buildTextArea(String label, TextEditingController controller) {
+    return TextFormField(
+      controller: controller,
+      maxLines: 8,
+      style: TextStyle(color: Colors.black),
+      validator: (value) {
+        if (value == null || value.isEmpty) return 'Campo obrigatório';
+        if (value.length < 50) return 'Mínimo de 50 caracteres';
+        return null;
+      },
+      decoration: InputDecoration(
+        labelText: label,
+        filled: true,
+        fillColor: const Color(0xFFCDA68C),
+        labelStyle: TextStyle(color: const Color(0xFF57362B)),
+        border: OutlineInputBorder(),
+      ),
+    );
   }
 }

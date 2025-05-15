@@ -2,6 +2,8 @@ import 'package:lecternus/SignIn.dart';
 import 'package:flutter/material.dart';
 import 'package:lecternus/Sobre.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lecternus/SignIn.dart';
+
 
 class Config extends StatefulWidget {
   @override

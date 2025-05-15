@@ -9,9 +9,10 @@ environment:
   sdk: ^3.6.2
 
 dependencies:
-  sqflite: ^2.0.0+3
+  sqflite_common_ffi: ^2.3.0
+  path: ^1.9.0
   flutter:
-    sdk: flutter
+    sdk: flutter  
 
   url_launcher: ^6.2.5
   font_awesome_flutter: ^10.7.0
