@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lecternus/database_helper.dart';
 import 'package:lecternus/main.dart';
@@ -13,6 +15,19 @@ class _CriarReviewState extends State<CriarReview> {
   final _resenhaController = TextEditingController();
   final _nomeLivroController = TextEditingController();
   final _nomeAutorController = TextEditingController();
+
+  File? _imagemSelecionada;
+
+  Future<void> _selecionarImagem() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _imagemSelecionada = File(pickedFile.path);
+      });
+    }
+  }
 
   Future<void> _salvarReview() async {
     if (_formKey.currentState!.validate()) {
@@ -42,7 +57,7 @@ class _CriarReviewState extends State<CriarReview> {
           'author_review': nome,
           'author_book': _nomeAutorController.text,
           'content': _resenhaController.text,
-          'image_path': 'assets/images/imagem.jpg',
+          'image_path': _imagemSelecionada?.path ?? 'assets/images/imagem.jpg',
         });
 
         // Atualiza contador de reviews
@@ -118,10 +133,9 @@ class _CriarReviewState extends State<CriarReview> {
                         height: 200,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
-                          child: Image.asset(
-                            'assets/images/imagem.jpg',
-                            fit: BoxFit.cover,
-                          ),
+                          child: _imagemSelecionada != null
+                              ? Image.file(_imagemSelecionada!, fit: BoxFit.cover)
+                              : Image.asset('assets/images/imagem.jpg', fit: BoxFit.cover),
                         ),
                       ),
                       SizedBox(width: 16),
@@ -159,9 +173,7 @@ class _CriarReviewState extends State<CriarReview> {
                     child: FloatingActionButton(
                       mini: true,
                       backgroundColor: const Color(0xFFCDA68C),
-                      onPressed: () {
-                        print("Botão flutuante pressionado!"); //selecionar imagem do celular
-                      },
+                      onPressed: _selecionarImagem,
                       child: Icon(Icons.add, color: Colors.white),
                     ),
                   ),

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:lecternus/Review.dart';
 import 'package:lecternus/ReviewModel.dart';
@@ -51,6 +52,15 @@ class _HomeState extends State<Home> {
     // Implementar lógica de seguir aqui
   }
 
+  /// Função para carregar a imagem certa (asset ou arquivo)
+  ImageProvider<Object> _buildImageProvider(String imagePath) {
+    if (imagePath.startsWith('/')) {
+      return FileImage(File(imagePath));
+    } else {
+      return AssetImage(imagePath);
+    }
+  }
+
   Widget _buildReviewCard(ReviewModel review) {
     return GestureDetector(
       onTap: () {
@@ -77,7 +87,7 @@ class _HomeState extends State<Home> {
               children: [
                 CircleAvatar(
                   radius: 40,
-                  backgroundImage: AssetImage(review.imagePath),
+                  backgroundImage: _buildImageProvider(review.imagePath),
                 ),
                 SizedBox(width: 10),
                 Expanded(
@@ -129,7 +139,7 @@ class _HomeState extends State<Home> {
                       ),
                       onPressed: () => _likeReview(review.id),
                     ),
-                    Text('0'), // Likes fixo por enquanto
+                    Text('0'),
                     SizedBox(width: 10),
                     IconButton(
                       icon: Icon(
@@ -139,7 +149,7 @@ class _HomeState extends State<Home> {
                       ),
                       onPressed: () => _showComments(review.id),
                     ),
-                    Text('0'), // Comments fixo por enquanto
+                    Text('0'),
                     SizedBox(width: 10),
                     IconButton(
                       icon: Icon(

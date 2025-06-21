@@ -1,23 +1,137 @@
 import 'package:flutter/material.dart';
 import 'package:lecternus/ReviewModel.dart';
 import 'package:lecternus/Config.dart';
+import 'package:uuid/uuid.dart';
 
-class ReviewPage extends StatelessWidget {
+class Comment {
+  final String id;
+  final String text;
+  final String userName;
+  final String? parentId;
+
+  Comment({
+    required this.id,
+    required this.text,
+    required this.userName,
+    this.parentId,
+  });
+}
+
+class ReviewPage extends StatefulWidget {
   final ReviewModel review;
 
   const ReviewPage({super.key, required this.review});
 
   @override
+  State<ReviewPage> createState() => _ReviewPageState();
+}
+
+class _ReviewPageState extends State<ReviewPage> {
+  bool liked = false;
+  int likeCount = 0;
+  final TextEditingController _commentController = TextEditingController();
+  List<Comment> comments = [];
+  String? replyingToId;
+  String? replyingToUser;
+
+  void _handleLike() {
+    if (!liked) {
+      setState(() {
+        liked = true;
+        likeCount++;
+      });
+    }
+  }
+
+  void _sendComment() {
+    final text = _commentController.text.trim();
+    if (text.isNotEmpty) {
+      setState(() {
+        comments.add(Comment(
+          id: Uuid().v4(),
+          text: text,
+          userName: 'Você',
+          parentId: replyingToId,
+        ));
+        _commentController.clear();
+        replyingToId = null;
+        replyingToUser = null;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Comentário enviado')),
+      );
+    }
+  }
+
+  void _replyToComment(String commentId, String userName) {
+    setState(() {
+      replyingToId = commentId;
+      replyingToUser = userName;
+    });
+  }
+
+  void _cancelReply() {
+    setState(() {
+      replyingToId = null;
+      replyingToUser = null;
+    });
+  }
+
+  List<Comment> _getReplies(String parentId) {
+    return comments.where((c) => c.parentId == parentId).toList();
+  }
+
+  Widget _buildComment(Comment comment, {int depth = 0}) {
+    return Padding(
+      padding: EdgeInsets.only(left: depth * 20.0, bottom: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white10,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            padding: EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('@${comment.userName}',
+                    style: TextStyle(color: Colors.white70)),
+                SizedBox(height: 4),
+                Text(comment.text, style: TextStyle(color: Colors.white)),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: TextButton(
+                    onPressed: () =>
+                        _replyToComment(comment.id, comment.userName),
+                    child: Text('Responder', style: TextStyle(fontSize: 12)),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ..._getReplies(comment.id).map(
+            (c) => _buildComment(c, depth: depth + 1),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final review = widget.review;
+    final topLevelComments = comments.where((c) => c.parentId == null).toList();
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: const Color(0xFF57362B),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           "Lecternus",
@@ -38,8 +152,9 @@ class ReviewPage extends StatelessWidget {
       backgroundColor: const Color(0xFF57362B),
       body: Padding(
         padding: EdgeInsets.all(16),
-        child: ListView(
+        child: Column(
           children: [
+            // Parte superior com imagem e info
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -88,22 +203,127 @@ class ReviewPage extends StatelessWidget {
                           fontStyle: FontStyle.italic,
                         ),
                       ),
+                      SizedBox(height: 8),
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: liked ? null : _handleLike,
+                            icon: Icon(
+                              liked ? Icons.favorite : Icons.favorite_border,
+                              color: liked ? Colors.red : Colors.white,
+                            ),
+                          ),
+                          Text(
+                            '$likeCount curtidas',
+                            style: TextStyle(color: Colors.white70),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 12),
+                      Text(
+                        'Comentários (${comments.length})',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ],
             ),
             SizedBox(height: 20),
-            Text(
-              review.reviewTitle,
-              style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.left,
+
+            // Título da review
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                review.reviewTitle,
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
             SizedBox(height: 10),
-            Text(
-              review.reviewText,
-              style: TextStyle(fontSize: 16, color: Colors.white),
-              textAlign: TextAlign.justify,
+
+            // Texto da review
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                review.reviewText,
+                style: TextStyle(fontSize: 16, color: Colors.white),
+                textAlign: TextAlign.left,
+              ),
+            ),
+            SizedBox(height: 20),
+
+            // Lista de comentários
+            if (comments.isNotEmpty)
+              Expanded(
+                child: ListView(
+                  children: topLevelComments
+                      .map((comment) => _buildComment(comment))
+                      .toList(),
+                ),
+              )
+            else
+              Expanded(child: Container()),
+
+            // Campo de comentário ou resposta
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(25),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (replyingToUser != null)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12, bottom: 4),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Respondendo a @$replyingToUser',
+                            style: TextStyle(color: Colors.brown),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: IconButton(
+                              icon: Icon(Icons.close,
+                                  size: 22, color: Colors.red),
+                              onPressed: _cancelReply,
+                              constraints: BoxConstraints(),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _commentController,
+                          decoration: InputDecoration(
+                            hintText: replyingToUser != null
+                                ? 'Escreva uma resposta...'
+                                : 'Escreva um comentário...',
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.send, color: Colors.brown[800]),
+                        onPressed: _sendComment,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),
