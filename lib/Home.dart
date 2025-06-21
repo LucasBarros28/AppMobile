@@ -5,6 +5,7 @@ import 'package:lecternus/Review.dart';
 import 'package:lecternus/ReviewModel.dart';
 import 'package:lecternus/ReviewSource.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:typed_data';
 
 class Home extends StatefulWidget {
   @override
@@ -31,6 +32,24 @@ class _HomeState extends State<Home> {
       setState(() {
         _reviews = [];
       });
+    }
+  }
+
+  Widget buildReviewImage(Uint8List? imageBlob) {
+    if (imageBlob != null && imageBlob.isNotEmpty) {
+      return Image.memory(
+        imageBlob,
+        width: 80,
+        height: 100,
+        fit: BoxFit.cover,
+      );
+    } else {
+      return Image.asset(
+        'assets/images/imagem.jpg',
+        width: 80,
+        height: 100,
+        fit: BoxFit.cover,
+      );
     }
   }
 
@@ -113,9 +132,9 @@ class _HomeState extends State<Home> {
           children: [
             Row(
               children: [
-                CircleAvatar(
-                  radius: 40,
-                  backgroundImage: _buildImageProvider(review.imagePath),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: buildReviewImage(review.imageBlob),
                 ),
                 SizedBox(width: 10),
                 Expanded(

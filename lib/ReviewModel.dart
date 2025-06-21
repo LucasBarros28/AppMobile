@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 class ReviewModel {
   final int id;
   final int profileId;
@@ -6,7 +8,7 @@ class ReviewModel {
   final String bookAuthor;
   final String reviewTitle;
   final String reviewText;
-  final String imagePath;
+  final Uint8List? imageBlob;
 
   ReviewModel({
     required this.id,
@@ -16,7 +18,7 @@ class ReviewModel {
     required this.bookAuthor,
     required this.reviewTitle,
     required this.reviewText,
-    required this.imagePath,
+    required this.imageBlob,
   });
 
   factory ReviewModel.fromMap(Map<String, dynamic> map) {
@@ -28,7 +30,7 @@ class ReviewModel {
       bookAuthor: map['author_book'],
       reviewTitle: map['title_review'],
       reviewText: map['content'],
-      imagePath: map['image_path'],
+      imageBlob: map['image_blob'],
     );
   }
 }

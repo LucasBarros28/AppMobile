@@ -50,6 +50,12 @@ class _CriarReviewState extends State<CriarReview> {
 
         final profileId = profileResult.first['id_profile'];
 
+        // 🔥 Lê os bytes da imagem selecionada (se houver)
+        final imageBytes = _imagemSelecionada != null
+            ? await _imagemSelecionada!.readAsBytes()
+            : null;
+
+        // 🔥 Insere a review com a imagem como BLOB
         await db.insert('Review', {
           'id_profile': profileId,
           'title_review': _resenhaController.text.substring(0, 20),
@@ -57,10 +63,10 @@ class _CriarReviewState extends State<CriarReview> {
           'author_review': nome,
           'author_book': _nomeAutorController.text,
           'content': _resenhaController.text,
-          'image_path': _imagemSelecionada?.path ?? 'assets/images/imagem.jpg',
+          'image_blob': imageBytes, // salva os bytes aqui
         });
 
-        // Atualiza contador de reviews
+        // 🔥 Atualiza contador de reviews
         final reviewCountResult = await db.rawQuery(
           'SELECT COUNT(*) as total FROM Review WHERE id_profile = ?',
           [profileId],
@@ -92,6 +98,7 @@ class _CriarReviewState extends State<CriarReview> {
       }
     }
   }
+
 
   @override
   void dispose() {

@@ -166,12 +166,21 @@ class _ReviewPageState extends State<ReviewPage> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.asset(
-                      review.imagePath,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+  borderRadius: BorderRadius.circular(8),
+  child: review.imageBlob != null && review.imageBlob!.isNotEmpty
+      ? Image.memory(
+          review.imageBlob!,
+          width: 80,
+          height: 100,
+          fit: BoxFit.cover,
+        )
+      : Image.asset(
+          'assets/images/imagem.jpg',
+          width: 80,
+          height: 100,
+          fit: BoxFit.cover,
+        ),
+),
                 ),
                 SizedBox(width: 16),
                 Expanded(
