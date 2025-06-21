@@ -33,6 +33,7 @@ class _ReviewPageState extends State<ReviewPage> {
   List<Comment> comments = [];
   String? replyingToId;
   String? replyingToUser;
+  Set<String> expandedCommentIds = {};
 
   void _handleLike() {
     if (!liked) {
@@ -41,6 +42,41 @@ class _ReviewPageState extends State<ReviewPage> {
         likeCount++;
       });
     }
+    // Esqueleto para integração futura com backend (Azure)==============================================
+    /*
+  final String reviewId = widget.review.id;
+  final String apiUrl = 'https://seu-backend.azurewebsites.net/api/likes';
+
+  try {
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'userId': userId,
+        'reviewId': reviewId,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        liked = true;
+        likeCount++;
+      });
+    } else if (response.statusCode == 409) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Você já curtiu esta review.')),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao curtir. Tente novamente.')),
+      );
+    }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Erro de rede: $e')),
+    );
+  }
+  */
   }
 
   void _sendComment() {
@@ -58,9 +94,38 @@ class _ReviewPageState extends State<ReviewPage> {
         replyingToUser = null;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Comentário enviado')),
+      // Esqueleto para integração futura com backend (Azure) =====================
+      /*
+    final String apiUrl = 'https://seu-backend.azurewebsites.net/api/comments';
+    final String commentId = Uuid().v4(); // ID único para o comentário
+    final String userId = 'user123'; // Substitua com ID do usuário autenticado
+    final String reviewId = widget.review.id; // ID da review sendo comentada
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'id': commentId,
+          'text': text,
+          'userId': userId,
+          'userName': 'Você',
+          'reviewId': reviewId,
+          'parentId': replyingToId,
+          'timestamp': DateTime.now().toIso8601String(),
+        }),
       );
+
+      if (response.statusCode == 201) {
+        // Comentário salvo com sucesso no backend
+      } else {
+        // Trate erros aqui
+        print('Erro ao salvar comentário: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Erro de rede: $e');
+    }
+    */
     }
   }
 
@@ -83,6 +148,9 @@ class _ReviewPageState extends State<ReviewPage> {
   }
 
   Widget _buildComment(Comment comment, {int depth = 0}) {
+    final hasReplies = _getReplies(comment.id).isNotEmpty;
+    final isExpanded = expandedCommentIds.contains(comment.id);
+
     return Padding(
       padding: EdgeInsets.only(left: depth * 20.0, bottom: 10),
       child: Column(
@@ -101,20 +169,54 @@ class _ReviewPageState extends State<ReviewPage> {
                     style: TextStyle(color: Colors.white70)),
                 SizedBox(height: 4),
                 Text(comment.text, style: TextStyle(color: Colors.white)),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: TextButton(
-                    onPressed: () =>
-                        _replyToComment(comment.id, comment.userName),
-                    child: Text('Responder', style: TextStyle(fontSize: 12)),
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                      onPressed: () =>
+                          _replyToComment(comment.id, comment.userName),
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      child: Text(
+                        'Responder',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    if (hasReplies)
+                      IconButton(
+                        icon: Icon(
+                          isExpanded ? Icons.expand_less : Icons.expand_more,
+                          color: Colors.white70,
+                          size: 20,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            if (isExpanded) {
+                              expandedCommentIds.remove(comment.id);
+                            } else {
+                              expandedCommentIds.add(comment.id);
+                            }
+                          });
+                        },
+                      ),
+                  ],
                 ),
               ],
             ),
           ),
-          ..._getReplies(comment.id).map(
-            (c) => _buildComment(c, depth: depth + 1),
-          ),
+          if (isExpanded)
+            ..._getReplies(comment.id).map(
+              (c) => _buildComment(c, depth: depth + 1),
+            ),
         ],
       ),
     );

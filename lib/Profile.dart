@@ -1,10 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:lecternus/Config.dart';
 import 'package:lecternus/database_helper.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lecternus/Review.dart';
 import 'package:lecternus/ReviewModel.dart';
-import 'package:lecternus/SignIn.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -20,16 +22,40 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
   int _following = 0;
   int? _idProfile;
 
+  File? _profileImage;
+
   List<Map<String, dynamic>> _userReviews = [];
   List<Map<String, dynamic>> _userComments = [];
 
   late TabController _tabController;
+
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     _loadUserProfile();
+  }
+
+  Future<void> _pickProfileImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null && _idProfile != null) {
+      final imagePath = pickedFile.path;
+
+      final db = await DatabaseHelper().db;
+      // Atualiza o caminho da imagem no banco
+      await db.update(
+        'Profile',
+        {'profile_image': imagePath},
+        where: 'id_profile = ?',
+        whereArgs: [_idProfile],
+      );
+
+      setState(() {
+        _profileImage = File(imagePath);
+      });
+    }
   }
 
   Future<void> _loadUserProfile() async {
@@ -39,11 +65,24 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
     if (idUser == null) return;
 
     final db = await DatabaseHelper().db;
-    final userResult = await db.query('User', where: 'id_user = ?', whereArgs: [idUser]);
-    final profileResult = await db.query('Profile', where: 'id_user = ?', whereArgs: [idUser]);
+    final userResult =
+        await db.query('User', where: 'id_user = ?', whereArgs: [idUser]);
+    final profileResult =
+        await db.query('Profile', where: 'id_user = ?', whereArgs: [idUser]);
 
     if (userResult.isNotEmpty && profileResult.isNotEmpty) {
       final profile = profileResult.first;
+
+      // Se existir caminho de imagem, cria File
+      File? imageFile;
+      if (profile['profile_image'] != null &&
+          (profile['profile_image'] as String).isNotEmpty) {
+        final path = profile['profile_image'] as String;
+        if (await File(path).exists()) {
+          imageFile = File(path);
+        }
+      }
+
       setState(() {
         _name = userResult.first['name'] as String;
         _tag = '@${profile['tag']}';
@@ -52,7 +91,9 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
         _followers = profile['count_followers'] as int;
         _following = profile['count_following'] as int;
         _idProfile = profile['id_profile'] as int;
+        _profileImage = imageFile;
       });
+
       _loadUserReviews();
       _loadUserComments();
     }
@@ -61,14 +102,14 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
   Future<void> _loadUserReviews() async {
     if (_idProfile == null) return;
     final db = await DatabaseHelper().db;
-    final result = await db.query('Review', where: 'id_profile = ?', whereArgs: [_idProfile]);
+    final result = await db
+        .query('Review', where: 'id_profile = ?', whereArgs: [_idProfile]);
 
     setState(() {
       _userReviews = result;
-      _reviews = result.length; // atualiza o contador com base nos dados reais
+      _reviews = result.length;
     });
 
-    // Atualiza no banco também
     await db.update(
       'Profile',
       {'count_reviews': result.length},
@@ -102,7 +143,8 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
           IconButton(
             icon: Icon(Icons.settings, color: Colors.white),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Config()));
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Config()));
             },
           ),
         ],
@@ -137,10 +179,17 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
       padding: EdgeInsets.all(16),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 40,
-            backgroundColor: Color(0xFFCDA68C),
-            child: Icon(Icons.person, size: 40, color: Color(0xFF57362B)),
+          GestureDetector(
+            onTap: _pickProfileImage,
+            child: CircleAvatar(
+              radius: 40,
+              backgroundColor: Color(0xFFCDA68C),
+              backgroundImage:
+                  _profileImage != null ? FileImage(_profileImage!) : null,
+              child: _profileImage == null
+                  ? Icon(Icons.person, size: 40, color: Color(0xFF57362B))
+                  : null,
+            ),
           ),
           SizedBox(width: 16),
           Expanded(
@@ -148,9 +197,15 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(_name,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white)),
                 Text(_tag,
-                    style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic, color: Colors.white70)),
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontStyle: FontStyle.italic,
+                        color: Colors.white70)),
                 SizedBox(height: 12),
                 Row(
                   children: [
@@ -173,7 +228,10 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
     return Column(
       children: [
         Text("$count",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white)),
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Colors.white)),
         Text(label, style: TextStyle(color: Colors.white)),
       ],
     );
@@ -181,7 +239,9 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
 
   Widget _buildReviewList() {
     if (_userReviews.isEmpty) {
-      return Center(child: Text("Nenhuma review encontrada", style: TextStyle(color: Colors.white)));
+      return Center(
+          child: Text("Nenhuma review encontrada",
+              style: TextStyle(color: Colors.white)));
     }
 
     return ListView.builder(
@@ -196,7 +256,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
               final model = ReviewModel(
                 id: review['id_review'],
                 profileId: review['id_profile'],
-                userName: _tag.replaceFirst('@', ''), // mais robusto que substring(1)
+                userName: _tag.replaceFirst('@', ''),
                 reviewTitle: review['title_review'],
                 bookTitle: review['title_book'],
                 reviewText: review['content'],
@@ -206,14 +266,17 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
 
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ReviewPage(review: model)),
+                MaterialPageRoute(
+                    builder: (context) => ReviewPage(review: model)),
               );
             },
-            title: Text(review['title_review'], style: TextStyle(color: Color(0xFF57362B))),
+            title: Text(review['title_review'],
+                style: TextStyle(color: Color(0xFF57362B))),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Livro: ${review['title_book']}", style: TextStyle(color: Color(0xFF57362B))),
+                Text("Livro: ${review['title_book']}",
+                    style: TextStyle(color: Color(0xFF57362B))),
                 SizedBox(height: 4),
                 Text(
                   review['content'],
@@ -231,7 +294,9 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
 
   Widget _buildCommentList() {
     if (_userComments.isEmpty) {
-      return Center(child: Text("Nenhum comentário publicado", style: TextStyle(color: Colors.white)));
+      return Center(
+          child: Text("Nenhum comentário publicado",
+              style: TextStyle(color: Colors.white)));
     }
 
     return ListView.builder(
@@ -256,11 +321,14 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
 
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ReviewPage(review: model)),
+                MaterialPageRoute(
+                    builder: (context) => ReviewPage(review: model)),
               );
             },
-            title: Text(comment['title_review'], style: TextStyle(color: Color(0xFF57362B))),
-            subtitle: Text(comment['content'], style: TextStyle(color: Color(0xFF57362B))),
+            title: Text(comment['title_review'],
+                style: TextStyle(color: Color(0xFF57362B))),
+            subtitle: Text(comment['content'],
+                style: TextStyle(color: Color(0xFF57362B))),
           ),
         );
       },
