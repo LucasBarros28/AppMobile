@@ -29,8 +29,6 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
 
   late TabController _tabController;
 
-  final ImagePicker _picker = ImagePicker();
-
   @override
   void initState() {
     super.initState();
@@ -39,22 +37,24 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
   }
 
   Future<void> _pickProfileImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null && _idProfile != null) {
-      final imagePath = pickedFile.path;
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
+    if (pickedFile != null) {
+      setState(() {
+        _profileImage = File(pickedFile.path);
+      });
+
+      // Exemplo: salvar caminho no banco
+      /*
       final db = await DatabaseHelper().db;
-      // Atualiza o caminho da imagem no banco
       await db.update(
         'Profile',
-        {'profile_image': imagePath},
+        {'profile_image': pickedFile.path},
         where: 'id_profile = ?',
         whereArgs: [_idProfile],
       );
-
-      setState(() {
-        _profileImage = File(imagePath);
-      });
+      */
     }
   }
 
@@ -72,17 +72,6 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
 
     if (userResult.isNotEmpty && profileResult.isNotEmpty) {
       final profile = profileResult.first;
-
-      // Se existir caminho de imagem, cria File
-      File? imageFile;
-      if (profile['profile_image'] != null &&
-          (profile['profile_image'] as String).isNotEmpty) {
-        final path = profile['profile_image'] as String;
-        if (await File(path).exists()) {
-          imageFile = File(path);
-        }
-      }
-
       setState(() {
         _name = userResult.first['name'] as String;
         _tag = '@${profile['tag']}';
@@ -91,9 +80,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
         _followers = profile['count_followers'] as int;
         _following = profile['count_following'] as int;
         _idProfile = profile['id_profile'] as int;
-        _profileImage = imageFile;
       });
-
       _loadUserReviews();
       _loadUserComments();
     }
