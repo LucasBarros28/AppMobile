@@ -1,0 +1,2 @@
+C:/Users/Alex/Downloads/lecternus/android/app/.cxx/Debug/1o243y6s/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/Alex/Downloads/lecternus/android/app/.cxx/Debug/1o243y6s/x86_64/CMakeFiles/rebuild_cache.dir

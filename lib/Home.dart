@@ -1,4 +1,3 @@
-// Home.dart
 import 'package:flutter/material.dart';
 import 'package:lecternus/Review.dart';
 import 'package:lecternus/ReviewModel.dart';
@@ -32,6 +31,151 @@ class _HomeState extends State<Home> {
     }
   }
 
+  void _likeReview(int reviewId) {
+    print('Curtir review: $reviewId');
+    // Implementar lógica de curtir aqui
+  }
+
+  void _showComments(int reviewId) {
+    print('Mostrar comentários para a review: $reviewId');
+    // Implementar lógica de comentários aqui
+  }
+
+  void _shareReview(ReviewModel review) {
+    print('Compartilhar review: ${review.reviewText}');
+    // Implementar lógica de compartilhamento aqui
+  }
+
+  void _followUser(int profileId) {
+    print('Seguir usuário: $profileId');
+    // Implementar lógica de seguir aqui
+  }
+
+  Widget _buildReviewCard(ReviewModel review) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ReviewPage(review: review),
+          ),
+        );
+      },
+      child: Container(
+        width: 350,
+        decoration: BoxDecoration(
+          color: const Color(0xFFCDA68C),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: 40,
+                  backgroundImage: AssetImage(review.imagePath),
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        review.userName,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Text(
+                        "Livro: ${review.bookTitle}",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Text(
+                        review.reviewText,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
+                        maxLines: 4,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: true,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        Icons.favorite_border,
+                        color: Colors.black,
+                        size: 30,
+                      ),
+                      onPressed: () => _likeReview(review.id),
+                    ),
+                    Text('0'), // Likes fixo por enquanto
+                    SizedBox(width: 10),
+                    IconButton(
+                      icon: Icon(
+                        Icons.mode_comment_outlined,
+                        color: Colors.black,
+                        size: 30,
+                      ),
+                      onPressed: () => _showComments(review.id),
+                    ),
+                    Text('0'), // Comments fixo por enquanto
+                    SizedBox(width: 10),
+                    IconButton(
+                      icon: Icon(
+                        Icons.share_outlined,
+                        color: Colors.black,
+                        size: 30,
+                      ),
+                      onPressed: () => _shareReview(review),
+                    ),
+                  ],
+                ),
+                ElevatedButton(
+                  onPressed: () => _followUser(review.profileId),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF57362B),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: Text(
+                    "+ Seguir Perfil",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,64 +196,7 @@ class _HomeState extends State<Home> {
               itemCount: _reviews.length,
               itemBuilder: (context, index) {
                 final review = _reviews[index];
-                return Card(
-                  color: Color(0xFFCDA68C),
-                  margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: ListTile(
-                    contentPadding: EdgeInsets.all(12),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ReviewPage(review: review),
-                        ),
-                      );
-                    },
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (review.userName.isNotEmpty)
-                          Text(
-                            '@${review.userName}',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
-                              color: Color(0xFF57362B),
-                            ),
-                          ),
-                        SizedBox(height: 4),
-                        Text(
-                          review.reviewTitle,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Color(0xFF57362B),
-                          ),
-                        ),
-                        SizedBox(height: 2),
-                        Text(
-                          'Livro: ${review.bookTitle}',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontStyle: FontStyle.italic,
-                            color: Color(0xFF57362B),
-                          ),
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          review.reviewText.length > 100
-                              ? '${review.reviewText.substring(0, 100)}...'
-                              : review.reviewText,
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: Color(0xFF57362B),
-                          ),
-                        ),
-                      ],
-                    ),
-                    trailing: Icon(Icons.arrow_forward_ios, color: Color(0xFF57362B)),
-                  ),
-                );
+                return _buildReviewCard(review);
               },
             ),
     );

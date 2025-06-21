@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lecternus/database_helper.dart';
 import 'package:lecternus/main.dart';
-import 'package:sqflite_common/sqlite_api.dart';
-import 'package:lecternus/SignIn.dart';
-
 
 class CriarReview extends StatefulWidget {
   @override
@@ -48,13 +45,11 @@ class _CriarReviewState extends State<CriarReview> {
           'image_path': 'assets/images/imagem.jpg',
         });
 
-        
         // Atualiza contador de reviews
         final reviewCountResult = await db.rawQuery(
-          
           'SELECT COUNT(*) as total FROM Review WHERE id_profile = ?',
           [profileId],
-          );
+        );
 
         final reviewCount = reviewCountResult.first['total'] as int;
 
@@ -112,19 +107,90 @@ class _CriarReviewState extends State<CriarReview> {
           key: _formKey,
           child: ListView(
             children: [
-              _buildTextField('Nome do Livro', _nomeLivroController),
-              SizedBox(height: 12),
-              _buildTextField('Autor do Livro', _nomeAutorController),
-              SizedBox(height: 12),
-              _buildTextArea('Escreva sua resenha', _resenhaController),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _salvarReview,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFCDA68C),
-                  padding: EdgeInsets.symmetric(vertical: 14),
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 150,
+                        height: 200,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.asset(
+                            'assets/images/imagem.jpg',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Nome do Livro:',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            _buildTextField('Digite o nome do livro', _nomeLivroController),
+                            SizedBox(height: 20),
+                            Text(
+                              'Nome do Autor:',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            _buildTextField('Digite o nome do autor', _nomeAutorController),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Positioned(
+                    bottom: -10,
+                    left: 120,
+                    child: FloatingActionButton(
+                      mini: true,
+                      backgroundColor: const Color(0xFFCDA68C),
+                      onPressed: () {
+                        print("Botão flutuante pressionado!"); //selecionar imagem do celular
+                      },
+                      child: Icon(Icons.add, color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 30),
+              Text(
+                'Resenha:',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
-                child: Text('Publicar', style: TextStyle(color: Colors.white)),
+              ),
+              _buildTextArea('Digite sua resenha aqui...', _resenhaController),
+              SizedBox(height: 20),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _salvarReview,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFCDA68C),
+                    padding: EdgeInsets.symmetric(vertical: 15),
+                  ),
+                  child: Text(
+                    'Publicar',
+                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                ),
               ),
             ],
           ),
@@ -133,26 +199,26 @@ class _CriarReviewState extends State<CriarReview> {
     );
   }
 
-  Widget _buildTextField(String label, TextEditingController controller) {
+  Widget _buildTextField(String hint, TextEditingController controller) {
     return TextFormField(
       controller: controller,
       style: TextStyle(color: Colors.black),
       validator: (value) =>
           value == null || value.isEmpty ? 'Campo obrigatório' : null,
       decoration: InputDecoration(
-        labelText: label,
+        hintText: hint,
         filled: true,
         fillColor: const Color(0xFFCDA68C),
-        labelStyle: TextStyle(color: const Color(0xFF57362B)),
+        hintStyle: TextStyle(color: const Color(0xFF57362B)),
         border: OutlineInputBorder(),
       ),
     );
   }
 
-  Widget _buildTextArea(String label, TextEditingController controller) {
+  Widget _buildTextArea(String hint, TextEditingController controller) {
     return TextFormField(
       controller: controller,
-      maxLines: 8,
+      maxLines: 13,
       style: TextStyle(color: Colors.black),
       validator: (value) {
         if (value == null || value.isEmpty) return 'Campo obrigatório';
@@ -160,10 +226,10 @@ class _CriarReviewState extends State<CriarReview> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: label,
+        hintText: hint,
         filled: true,
         fillColor: const Color(0xFFCDA68C),
-        labelStyle: TextStyle(color: const Color(0xFF57362B)),
+        hintStyle: TextStyle(color: const Color(0xFF57362B)),
         border: OutlineInputBorder(),
       ),
     );
