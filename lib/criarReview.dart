@@ -113,15 +113,10 @@ class _CriarReviewState extends State<CriarReview> {
     return Scaffold(
       backgroundColor: const Color(0xFF57362B),
       appBar: AppBar(
-        title: Text('Criar Review'),
+        automaticallyImplyLeading: false,
+        title: Text("Criar Review", style: TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF57362B),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => MainScreen(initialIndex: 0)),
-          ),
-        ),
+        
       ),
       body: Padding(
         padding: EdgeInsets.all(16),

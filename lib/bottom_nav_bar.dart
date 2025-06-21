@@ -32,17 +32,8 @@ class BottomNavBar extends StatelessWidget {
           label: "Pesquisa",
         ),
         BottomNavigationBarItem(
-          icon: Icon(
-            Icons.add_box,
-            size: 50.0,
-          ),
-          label: "",
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(
-            Icons.chat,
-          ),
-          label: "Chat",
+          icon: Icon(Icons.add_box),
+          label: "Criar Review",
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),

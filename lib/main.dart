@@ -4,7 +4,6 @@ import 'package:lecternus/Profile.dart';
 import 'package:lecternus/criarReview.dart';
 import 'package:lecternus/SignIn.dart';
 import 'package:lecternus/pesquisar.dart';
-import 'package:lecternus/chat.dart';
 import 'package:lecternus/bottom_nav_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lecternus/SignIn.dart';
@@ -43,8 +42,7 @@ class MyApp extends StatelessWidget {
         "/home": (context) => MainScreen(initialIndex: 0),
         "/pesquisa": (context) => MainScreen(initialIndex: 1),
         "/review": (context) => MainScreen(initialIndex: 2),
-        "/chat": (context) => MainScreen(initialIndex: 3),
-        "/perfil": (context) => MainScreen(initialIndex: 4),
+        "/perfil": (context) => MainScreen(initialIndex: 3),
       },
     );
   }
@@ -71,7 +69,6 @@ class _MainScreenState extends State<MainScreen> {
     Home(),
     Pesquisar(),
     CriarReview(),
-    Chat(),
     Profile(),
   ];
 
