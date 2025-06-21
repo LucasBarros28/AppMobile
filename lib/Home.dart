@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'package:share_plus/share_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:lecternus/Review.dart';
 import 'package:lecternus/ReviewModel.dart';
 import 'package:lecternus/ReviewSource.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -43,13 +45,39 @@ class _HomeState extends State<Home> {
   }
 
   void _shareReview(ReviewModel review) {
-    print('Compartilhar review: ${review.reviewText}');
-    // Implementar lógica de compartilhamento aqui
+    final message = '''
+  📚 *${review.bookTitle}* por ${review.bookAuthor}
+
+  📝 Resenha:
+  ${review.reviewText}
+
+  Compartilhado via Lecternus 📖
+  ''';
+
+    Share.share(message);
   }
 
-  void _followUser(int profileId) {
-    print('Seguir usuário: $profileId');
-    // Implementar lógica de seguir aqui
+  Future<void> _followUser(int profileIdToFollow) async {
+    print('Seguir perfil: $profileIdToFollow');
+
+    // Esqueleto para implementar a lógica de seguir
+    // 1) Pegar usuário atual do SharedPreferences
+    final prefs = await SharedPreferences.getInstance();
+    final int? currentUserId = prefs.getInt('id_user');
+    if (currentUserId == null) {
+      print('Usuário não logado.');
+      return;
+    }
+
+    // 2) Buscar id_profile do usuário atual no banco (implementar depois)
+
+    // 3) Inserir relação de follow no banco (implementar depois)
+
+    // 4) Atualizar contador 'Seguindo' no perfil do usuário atual (implementar depois)
+
+    // 5) Atualizar UI se necessário (setState)
+
+    // Por enquanto só printa para confirmar
   }
 
   /// Função para carregar a imagem certa (asset ou arquivo)
