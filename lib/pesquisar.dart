@@ -201,7 +201,7 @@ class _PesquisarState extends State<Pesquisar> {
       appBar: AppBar(
         backgroundColor: Color(0xFF57362B),
         automaticallyImplyLeading: false,
-        title: Text("Lecternus", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        title: Text("Lecternus", style: TextStyle(color: Colors.white)),
         actions: [
           IconButton(
             icon: Icon(Icons.settings, color: Colors.white),
