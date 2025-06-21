@@ -139,6 +139,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
           controller: _tabController,
           indicatorColor: Color(0xFFCDA68C),
           labelStyle: TextStyle(color: Color(0xFFFFFFFF)),
+          unselectedLabelStyle: TextStyle(color: Color(0xFF000000)),
           tabs: [
             Tab(text: 'Reviews'),
             Tab(text: 'Comentários'),
