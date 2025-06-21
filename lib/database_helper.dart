@@ -65,7 +65,7 @@ class DatabaseHelper {
         author_review TEXT NOT NULL,
         author_book TEXT NOT NULL,
         content TEXT NOT NULL,
-        image_path TEXT NOT NULL,
+        image_blob BLOB,
         FOREIGN KEY (id_profile) REFERENCES Profile(id_profile)
       );
     ''');

@@ -7,6 +7,7 @@ import 'package:lecternus/ReviewModel.dart';
 import 'package:lecternus/Review.dart';
 import 'package:lecternus/UserProfilePage.dart';
 import 'package:lecternus/SignIn.dart';
+import 'dart:typed_data';
 
 
 class Pesquisar extends StatefulWidget {
@@ -82,7 +83,7 @@ class _PesquisarState extends State<Pesquisar> {
             bookTitle: r['title_book'] as String,
             reviewText: r['content'] as String,
             bookAuthor: r['author_book'] as String,
-            imagePath: r['image_path'] as String,
+            imageBlob: r['image_blob'] as Uint8List,
           )
         }).toList();
       });

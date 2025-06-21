@@ -261,7 +261,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                 bookTitle: review['title_book'],
                 reviewText: review['content'],
                 bookAuthor: review['author_book'] ?? '',
-                imagePath: review['image_path'] ?? '',
+                imageBlob: review['image_blob'] ?? '',
               );
 
               Navigator.push(
@@ -316,7 +316,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                 bookTitle: comment['title_book'],
                 reviewText: comment['review_text'],
                 bookAuthor: comment['author_book'] ?? '',
-                imagePath: comment['image_path'] ?? '',
+                imageBlob: comment['image_blob'] ?? '',
               );
 
               Navigator.push(
