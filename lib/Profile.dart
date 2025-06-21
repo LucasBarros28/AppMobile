@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lecternus/Config.dart';
@@ -34,6 +33,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     _loadUserProfile();
+    _loadProfileImagePath();
   }
 
   Future<void> _pickProfileImage() async {
@@ -45,16 +45,59 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
         _profileImage = File(pickedFile.path);
       });
 
-      // Exemplo: salvar caminho no banco
+      // Salvar caminho da imagem no SharedPreferences (atualmente)
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('profile_image_path', pickedFile.path);
+
+      // =============================================
+      // ESQUELETO PARA SALVAR O CAMINHO NO BANCO DE DADOS
+      // =============================================
       /*
+      if (_idProfile != null) {
+        final db = await DatabaseHelper().db;
+        await db.update(
+          'Profile',
+          {'profile_image': pickedFile.path}, // supondo que o campo é profile_image
+          where: 'id_profile = ?',
+          whereArgs: [_idProfile],
+        );
+      }
+      */
+    }
+  }
+
+  Future<void> _loadProfileImagePath() async {
+    // =============================================
+    // ESQUELETO PARA CARREGAR O CAMINHO DA IMAGEM DO BANCO DE DADOS
+    // =============================================
+    /*
+    if (_idProfile != null) {
       final db = await DatabaseHelper().db;
-      await db.update(
+      final result = await db.query(
         'Profile',
-        {'profile_image': pickedFile.path},
+        columns: ['profile_image'],
         where: 'id_profile = ?',
         whereArgs: [_idProfile],
       );
-      */
+      if (result.isNotEmpty) {
+        final path = result.first['profile_image'] as String?;
+        if (path != null && path.isNotEmpty) {
+          setState(() {
+            _profileImage = File(path);
+          });
+          return; // imagem carregada do banco, retorna aqui
+        }
+      }
+    }
+    */
+
+    // Se não carregou do banco, carrega do SharedPreferences (fallback)
+    final prefs = await SharedPreferences.getInstance();
+    final path = prefs.getString('profile_image_path');
+    if (path != null) {
+      setState(() {
+        _profileImage = File(path);
+      });
     }
   }
 
@@ -138,6 +181,8 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
         bottom: TabBar(
           controller: _tabController,
           indicatorColor: Color(0xFFCDA68C),
+          labelStyle: TextStyle(color: Color(0xFFFFFFFF)),
+          unselectedLabelStyle: TextStyle(color: Color(0xFF000000)),
           tabs: [
             Tab(text: 'Reviews'),
             Tab(text: 'Comentários'),
