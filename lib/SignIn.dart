@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lecternus/Home.dart';
 import 'package:lecternus/main.dart';
 import 'package:lecternus/SignUp.dart';
-import 'package:lecternus/bottom_nav_bar.dart';
 import 'package:lecternus/database_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

@@ -1,21 +1,10 @@
+
 import 'package:flutter/material.dart';
 import 'package:lecternus/ReviewModel.dart';
 import 'package:lecternus/Config.dart';
-import 'package:uuid/uuid.dart';
-
-class Comment {
-  final String id;
-  final String text;
-  final String userName;
-  final String? parentId;
-
-  Comment({
-    required this.id,
-    required this.text,
-    required this.userName,
-    this.parentId,
-  });
-}
+import 'package:lecternus/CommentModel.dart';
+import 'package:lecternus/CommentSource.dart';
+import 'package:lecternus/ReviewSource.dart';
 
 class ReviewPage extends StatefulWidget {
   final ReviewModel review;
@@ -30,108 +19,55 @@ class _ReviewPageState extends State<ReviewPage> {
   bool liked = false;
   int likeCount = 0;
   final TextEditingController _commentController = TextEditingController();
-  List<Comment> comments = [];
+  List<CommentModel> comments = [];
   String? replyingToId;
   String? replyingToUser;
-  Set<String> expandedCommentIds = {};
+  Set<int> expandedCommentIds = {};
 
-  void _handleLike() {
+  @override
+  void initState() {
+    super.initState();
+    likeCount = widget.review.likes;
+    _loadComments();
+  }
+
+  Future<void> _loadComments() async {
+    final loaded = await CommentSource.getCommentsByReview(widget.review.id);
+    setState(() {
+      comments = loaded;
+    });
+  }
+
+  void _handleLike() async {
     if (!liked) {
       setState(() {
         liked = true;
         likeCount++;
       });
+      await ReviewSource.updateLikes(widget.review.id, likeCount);
     }
-    // Esqueleto para integração futura com backend (Azure)==============================================
-    /*
-  final String reviewId = widget.review.id;
-  final String apiUrl = 'https://seu-backend.azurewebsites.net/api/likes';
-
-  try {
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'userId': userId,
-        'reviewId': reviewId,
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      setState(() {
-        liked = true;
-        likeCount++;
-      });
-    } else if (response.statusCode == 409) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Você já curtiu esta review.')),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erro ao curtir. Tente novamente.')),
-      );
-    }
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Erro de rede: $e')),
-    );
-  }
-  */
   }
 
-  void _sendComment() {
+  void _sendComment() async {
     final text = _commentController.text.trim();
     if (text.isNotEmpty) {
-      setState(() {
-        comments.add(Comment(
-          id: Uuid().v4(),
-          text: text,
-          userName: 'Você',
-          parentId: replyingToId,
-        ));
-        _commentController.clear();
-        replyingToId = null;
-        replyingToUser = null;
-      });
-
-      // Esqueleto para integração futura com backend (Azure) =====================
-      /*
-    final String apiUrl = 'https://seu-backend.azurewebsites.net/api/comments';
-    final String commentId = Uuid().v4(); // ID único para o comentário
-    final String userId = 'user123'; // Substitua com ID do usuário autenticado
-    final String reviewId = widget.review.id; // ID da review sendo comentada
-
-    try {
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'id': commentId,
-          'text': text,
-          'userId': userId,
-          'userName': 'Você',
-          'reviewId': reviewId,
-          'parentId': replyingToId,
-          'timestamp': DateTime.now().toIso8601String(),
-        }),
-      );
-
-      if (response.statusCode == 201) {
-        // Comentário salvo com sucesso no backend
-      } else {
-        // Trate erros aqui
-        print('Erro ao salvar comentário: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Erro de rede: $e');
-    }
-    */
+      await CommentSource.insertComment(CommentModel(
+        reviewId: widget.review.id,
+        profileId: widget.review.profileId,
+        content: text,
+        parentId: replyingToId != null ? int.tryParse(replyingToId!) : null,
+        likes: 0,
+      ));
+      _commentController.clear();
+      replyingToId = null;
+      replyingToUser = null;
+      _loadComments();
     }
   }
 
-  void _replyToComment(String commentId, String userName) {
+  void _replyToComment(int commentId, String userName) {
     setState(() {
-      replyingToId = commentId;
+      replyingToId = commentId.toString();
       replyingToUser = userName;
     });
   }
@@ -143,12 +79,12 @@ class _ReviewPageState extends State<ReviewPage> {
     });
   }
 
-  List<Comment> _getReplies(String parentId) {
+  List<CommentModel> _getReplies(int parentId) {
     return comments.where((c) => c.parentId == parentId).toList();
   }
 
-  Widget _buildComment(Comment comment, {int depth = 0}) {
-    final hasReplies = _getReplies(comment.id).isNotEmpty;
+  Widget _buildComment(CommentModel comment, {int depth = 0}) {
+    final hasReplies = _getReplies(comment.id!).isNotEmpty;
     final isExpanded = expandedCommentIds.contains(comment.id);
 
     return Padding(
@@ -165,16 +101,14 @@ class _ReviewPageState extends State<ReviewPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('@${comment.userName}',
-                    style: TextStyle(color: Colors.white70)),
+                Text('@usuário', style: TextStyle(color: Colors.white70)),
                 SizedBox(height: 4),
-                Text(comment.text, style: TextStyle(color: Colors.white)),
+                Text(comment.content, style: TextStyle(color: Colors.white)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     TextButton(
-                      onPressed: () =>
-                          _replyToComment(comment.id, comment.userName),
+                      onPressed: () => _replyToComment(comment.id!, 'usuário'),
                       style: TextButton.styleFrom(
                         backgroundColor: Colors.white,
                         padding:
@@ -183,13 +117,9 @@ class _ReviewPageState extends State<ReviewPage> {
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
-                      child: Text(
-                        'Responder',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.black,
-                        ),
-                      ),
+                      child: Text('Responder',
+                          style:
+                              TextStyle(fontSize: 12, color: Colors.black)),
                     ),
                     if (hasReplies)
                       IconButton(
@@ -201,9 +131,9 @@ class _ReviewPageState extends State<ReviewPage> {
                         onPressed: () {
                           setState(() {
                             if (isExpanded) {
-                              expandedCommentIds.remove(comment.id);
+                              expandedCommentIds.remove(comment.id!);
                             } else {
-                              expandedCommentIds.add(comment.id);
+                              expandedCommentIds.add(comment.id!);
                             }
                           });
                         },
@@ -214,9 +144,8 @@ class _ReviewPageState extends State<ReviewPage> {
             ),
           ),
           if (isExpanded)
-            ..._getReplies(comment.id).map(
-              (c) => _buildComment(c, depth: depth + 1),
-            ),
+            ..._getReplies(comment.id!)
+                .map((c) => _buildComment(c, depth: depth + 1)),
         ],
       ),
     );
@@ -228,16 +157,13 @@ class _ReviewPageState extends State<ReviewPage> {
     final topLevelComments = comments.where((c) => c.parentId == null).toList();
 
     return Scaffold(
-      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: const Color(0xFF57362B),
+        title: Text('Lecternus',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          "Lecternus",
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         actions: [
           IconButton(
@@ -248,7 +174,7 @@ class _ReviewPageState extends State<ReviewPage> {
                 MaterialPageRoute(builder: (context) => Config()),
               );
             },
-          ),
+          )
         ],
       ),
       backgroundColor: const Color(0xFF57362B),
@@ -256,7 +182,6 @@ class _ReviewPageState extends State<ReviewPage> {
         padding: EdgeInsets.all(16),
         child: Column(
           children: [
-            // Parte superior com imagem e info
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -267,111 +192,73 @@ class _ReviewPageState extends State<ReviewPage> {
                     color: Colors.grey[300],
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: ClipRRect(
-  borderRadius: BorderRadius.circular(8),
-  child: review.imageBlob != null && review.imageBlob!.isNotEmpty
-      ? Image.memory(
-          review.imageBlob!,
-          width: 80,
-          height: 100,
-          fit: BoxFit.cover,
-        )
-      : Image.asset(
-          'assets/images/imagem.jpg',
-          width: 80,
-          height: 100,
-          fit: BoxFit.cover,
-        ),
-),
+                  child: review.imageBlob != null && review.imageBlob!.isNotEmpty
+                      ? Image.memory(review.imageBlob!, fit: BoxFit.cover)
+                      : Image.asset('assets/images/imagem.jpg',
+                          fit: BoxFit.cover),
                 ),
                 SizedBox(width: 16),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Livro: ${review.bookTitle}',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
+                      Text('Livro: ${review.bookTitle}',
+                          style:
+                              TextStyle(fontSize: 18, color: Colors.white)),
                       SizedBox(height: 8),
-                      Text(
-                        'Autor: ${review.bookAuthor}',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white70,
-                        ),
-                      ),
+                      Text('Autor: ${review.bookAuthor}',
+                          style:
+                              TextStyle(fontSize: 16, color: Colors.white70)),
                       SizedBox(height: 8),
-                      Text(
-                        '@${review.userName}',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.white54,
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
+                      Text('@${review.userName}',
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white54,
+                              fontStyle: FontStyle.italic)),
                       SizedBox(height: 8),
                       Row(
                         children: [
                           IconButton(
                             onPressed: liked ? null : _handleLike,
                             icon: Icon(
-                              liked ? Icons.favorite : Icons.favorite_border,
+                              liked
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
                               color: liked ? Colors.red : Colors.white,
                             ),
                           ),
-                          Text(
-                            '$likeCount curtidas',
-                            style: TextStyle(color: Colors.white70),
-                          ),
+                          Text('$likeCount curtidas',
+                              style: TextStyle(color: Colors.white70))
                         ],
                       ),
                       SizedBox(height: 12),
-                      Text(
-                        'Comentários (${comments.length})',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
+                      Text('Comentários (${comments.length})',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white)),
                     ],
                   ),
                 ),
               ],
             ),
             SizedBox(height: 20),
-
-            // Título da review
             Align(
               alignment: Alignment.centerLeft,
-              child: Text(
-                review.reviewTitle,
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              child: Text(review.reviewTitle,
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold)),
             ),
             SizedBox(height: 10),
-
-            // Texto da review
             Align(
               alignment: Alignment.centerLeft,
-              child: Text(
-                review.reviewText,
-                style: TextStyle(fontSize: 16, color: Colors.white),
-                textAlign: TextAlign.left,
-              ),
+              child: Text(review.reviewText,
+                  style: TextStyle(fontSize: 16, color: Colors.white),
+                  textAlign: TextAlign.left),
             ),
             SizedBox(height: 20),
-
-            // Lista de comentários
             if (comments.isNotEmpty)
               Expanded(
                 child: ListView(
@@ -382,8 +269,6 @@ class _ReviewPageState extends State<ReviewPage> {
               )
             else
               Expanded(child: Container()),
-
-            // Campo de comentário ou resposta
             Container(
               padding: EdgeInsets.symmetric(horizontal: 8),
               decoration: BoxDecoration(
@@ -398,18 +283,12 @@ class _ReviewPageState extends State<ReviewPage> {
                       padding: const EdgeInsets.only(left: 12, bottom: 4),
                       child: Row(
                         children: [
-                          Text(
-                            'Respondendo a @$replyingToUser',
-                            style: TextStyle(color: Colors.brown),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: IconButton(
-                              icon: Icon(Icons.close,
-                                  size: 22, color: Colors.red),
-                              onPressed: _cancelReply,
-                              constraints: BoxConstraints(),
-                            ),
+                          Text('Respondendo a @$replyingToUser',
+                              style: TextStyle(color: Colors.brown)),
+                          IconButton(
+                            icon: Icon(Icons.close,
+                                size: 22, color: Colors.red),
+                            onPressed: _cancelReply,
                           ),
                         ],
                       ),

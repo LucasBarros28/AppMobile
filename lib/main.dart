@@ -5,8 +5,6 @@ import 'package:lecternus/criarReview.dart';
 import 'package:lecternus/SignIn.dart';
 import 'package:lecternus/pesquisar.dart';
 import 'package:lecternus/bottom_nav_bar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:lecternus/SignIn.dart';
 
 
 // Banco de dados

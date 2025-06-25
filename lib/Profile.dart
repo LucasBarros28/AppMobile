@@ -6,6 +6,7 @@ import 'package:lecternus/database_helper.dart';
 import 'package:lecternus/Review.dart';
 import 'package:lecternus/ReviewModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:typed_data';
 
 class Profile extends StatefulWidget {
   @override
@@ -153,7 +154,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
     final db = await DatabaseHelper().db;
     final result = await db.rawQuery('''
       SELECT c.content, r.title_review, r.id_review, r.title_book,
-             r.content as review_text, r.image_path, r.id_profile
+            r.content AS review_text, r.image_blob, r.likes, r.author_book, r.id_profile
       FROM Comment c 
       JOIN Review r ON c.id_review = r.id_review 
       WHERE c.id_profile = ?
@@ -293,7 +294,8 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
                 bookTitle: review['title_book'],
                 reviewText: review['content'],
                 bookAuthor: review['author_book'] ?? '',
-                imageBlob: review['image_blob'] ?? '',
+                imageBlob: review['image_blob'] as Uint8List,
+                likes: review['likes'] ?? 0,
               );
 
               Navigator.push(
@@ -341,15 +343,18 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin {
           child: ListTile(
             onTap: () {
               final model = ReviewModel(
-                id: comment['id_review'],
-                profileId: comment['id_profile'],
-                userName: _tag.replaceFirst('@', ''),
-                reviewTitle: comment['title_review'],
-                bookTitle: comment['title_book'],
-                reviewText: comment['review_text'],
-                bookAuthor: comment['author_book'] ?? '',
-                imageBlob: comment['image_blob'] ?? '',
-              );
+                  id: comment['id_review'],
+                  profileId: comment['id_profile'],
+                  userName: _tag.replaceFirst('@', ''),
+                  reviewTitle: comment['title_review'],
+                  bookTitle: comment['title_book'],
+                  reviewText: comment['review_text'],
+                  bookAuthor: comment['author_book'] ?? '',
+                  imageBlob: comment['image_blob'] != null
+                      ? Uint8List.fromList(comment['image_blob'])
+                      : null,
+                  likes: comment['likes'] ?? 0,
+                );
 
               Navigator.push(
                 context,

@@ -1,5 +1,4 @@
 // ReviewSource.dart
-import 'package:sqflite_common/sqlite_api.dart';
 import 'package:lecternus/database_helper.dart';
 import 'package:lecternus/ReviewModel.dart';
 
@@ -14,5 +13,15 @@ class ReviewSource {
     ''');
 
     return result.map((map) => ReviewModel.fromMap(map)).toList();
+  }
+
+  static Future<void> updateLikes(int reviewId, int newLikes) async {
+    final db = await DatabaseHelper().db;
+    await db.update(
+      'Review',
+      {'likes': newLikes},
+      where: 'id_review = ?',
+      whereArgs: [reviewId],
+    );
   }
 }

@@ -2,8 +2,6 @@ import 'dart:io';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:path/path.dart';
-import 'package:lecternus/SignIn.dart';
-
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -17,21 +15,26 @@ class DatabaseHelper {
   }
 
   Future<Database> initDb() async {
-  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-    sqfliteFfiInit();
-    databaseFactory = databaseFactoryFfi;
+    if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+      sqfliteFfiInit();
+      databaseFactory = databaseFactoryFfi;
+    }
+
+    final dbPath = await databaseFactory.getDatabasesPath();
+    final path = join(dbPath, 'app_livros.db');
+
+    print('🐴 CAMINHO DO BANCO: $path');
+
+    return await databaseFactory.openDatabase(
+      path,
+      options: OpenDatabaseOptions(
+        version: 2,
+        onCreate: _onCreate,
+        onUpgrade: _onUpgrade,
+      ),
+    );
   }
 
-  final dbPath = await databaseFactory.getDatabasesPath();
-  final path = join(dbPath, 'app_livros.db');
-
-  print('🐴 CAMINHO DO BANCO: $path'); // <-- Aqui
-
-  return await databaseFactory.openDatabase(path, options: OpenDatabaseOptions(
-    version: 1,
-    onCreate: _onCreate,
-  ));
-}
   Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE User (
@@ -60,6 +63,7 @@ class DatabaseHelper {
       CREATE TABLE Review (
         id_review INTEGER PRIMARY KEY AUTOINCREMENT,
         id_profile INTEGER NOT NULL,
+        likes INTEGER DEFAULT 0,
         title_review TEXT NOT NULL,
         title_book TEXT NOT NULL,
         author_review TEXT NOT NULL,
@@ -83,5 +87,15 @@ class DatabaseHelper {
         FOREIGN KEY (parent_comment_id) REFERENCES Comment(id_comment)
       );
     ''');
+  }
+
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      final columns = await db.rawQuery("PRAGMA table_info(Review)");
+      final hasLikes = columns.any((col) => col['name'] == 'likes');
+      if (!hasLikes) {
+        await db.execute("ALTER TABLE Review ADD COLUMN likes INTEGER DEFAULT 0");
+      }
+    }
   }
 }

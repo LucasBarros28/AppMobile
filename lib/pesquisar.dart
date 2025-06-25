@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lecternus/Config.dart';
 import 'package:lecternus/main.dart';
 import 'package:lecternus/database_helper.dart';
 import 'package:lecternus/ReviewModel.dart';
 import 'package:lecternus/Review.dart';
 import 'package:lecternus/UserProfilePage.dart';
-import 'package:lecternus/SignIn.dart';
 import 'dart:typed_data';
 
 
@@ -76,15 +74,16 @@ class _PesquisarState extends State<Pesquisar> {
         _searchResults = result.map((r) => {
           'type': 'review',
           'review': ReviewModel(
-            id: r['id_review'] as int,
-            profileId: r['id_profile'] as int,
-            userName: r['tag'] as String,
-            reviewTitle: r['title_review'] as String,
-            bookTitle: r['title_book'] as String,
-            reviewText: r['content'] as String,
-            bookAuthor: r['author_book'] as String,
-            imageBlob: r['image_blob'] as Uint8List,
-          )
+              id: r['id_review'] as int,
+              profileId: r['id_profile'] as int,
+              userName: r['tag'] as String,
+              reviewTitle: r['title_review'] as String,
+              bookTitle: r['title_book'] as String,
+              reviewText: r['content'] as String,
+              bookAuthor: r['author_book'] as String,
+              imageBlob: r['image_blob'] as Uint8List,
+              likes: r['likes'] as int,
+)
         }).toList();
       });
     }
@@ -143,7 +142,7 @@ class _PesquisarState extends State<Pesquisar> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => UserProfilePage(
-                      idProfile: item['id_profile'] as int,
+                      profileId: item['id_profile'] as int,
                       tag: item['tag'] as String,
                     ),
                   ),
